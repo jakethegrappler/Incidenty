@@ -27,3 +27,4 @@ public class CampusController {
         return ResponseEntity.ok(campusService.createCampus(campusDto));
     }
 }
+///info ktery vrati vsechny informace, at uz vsechny zaznamy a nebo treba id aby vratil podle id

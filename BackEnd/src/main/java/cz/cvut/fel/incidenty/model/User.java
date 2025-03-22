@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.time.LocalDateTime;
-import java.util.List;
 
 // Abstraktní uživatel
 @AllArgsConstructor
@@ -14,7 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 @MappedSuperclass
-public abstract class AbstractUser {
+public abstract class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity(name = "admin")
-public class Admin extends AbstractUser {
+public class Admin extends User {
     @Column(nullable = false)
     private String firstName;
 

@@ -1,0 +1,17 @@
+version: "3.9"
+
+volumes:
+  incidenty-postgres:
+
+services:
+  incidenty-postgres:
+    image: postgres:latest
+    hostname: incidenty-host
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./incidenty-postgres:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: incidenty

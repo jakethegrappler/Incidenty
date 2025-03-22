@@ -11,11 +11,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@MappedSuperclass
 @Inheritance(strategy = InheritanceType.JOINED)
-@Table(name = "users")
+//@Table(name = "users")
 @Entity(name = "student")
-public class Student extends AbstractUser {
+public class Student extends User {
     @Column(nullable = false)
     private String firstName;
 
