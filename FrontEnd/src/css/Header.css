@@ -8,11 +8,16 @@
     position: relative;
 }
 
+/* Logo */
 .logo {
-    font-weight: bold;
-    font-size: 1.2rem;
+    position: relative;
+    left: 10px;
+    width: 55px;
+    height: 55px;
+    border-radius: 25%;
 }
 
+/* Dropdown menu */
 .menu-wrapper {
     position: relative;
 }
@@ -27,6 +32,7 @@
     border-radius: 5px;
 }
 
+/* Menu na mobilech */
 .dropdown-nav {
     position: absolute;
     right: 0;
@@ -60,4 +66,20 @@
 
 .dropdown-nav li a:hover {
     background-color: #f0f0f0;
+}
+
+/* 📱 Responzivní úpravy pro mobily */
+@media (max-width: 768px) {
+    .header {
+        padding: 8px 15px;
+    }
+
+    .logo {
+        font-size: 1rem;
+    }
+
+    .menu-toggle {
+        font-size: 0.9rem;
+        padding: 6px 10px;
+    }
 }

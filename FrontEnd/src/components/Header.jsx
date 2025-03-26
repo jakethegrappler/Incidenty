@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "../css/Header.css";
-
+import logo from "../assets/Incidenty-logo.png";
 function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
 
@@ -10,7 +10,9 @@ function Header() {
 
     return (
         <header className="header">
-            <div className="logo">LOGO</div>
+            <div className="logo-container">
+               <img src={logo} alt="logo picture" className="logo" />
+            </div>
             <div className="menu-wrapper">
                 <button className="menu-toggle" onClick={toggleMenu}>
                     {menuOpen ? "☰" : "☰"}

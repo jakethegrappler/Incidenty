@@ -4,6 +4,8 @@
     background-color: white;
     flex-direction: column;
     color: #000;
+    align-items: center;
+    padding: 1rem;
 }
 
 .main-content {
@@ -11,8 +13,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
+    max-width: 450px; /* Zabraňuje roztažení na širokých displejích */
 }
 
+/* Nadpis */
 .main-content h1 {
     font-size: 1.25rem;
     font-weight: 600;
@@ -20,9 +25,9 @@
     margin-bottom: 16px;
 }
 
+/* Mapa */
 .map-placeholder {
     width: 100%;
-    max-width: 400px;
     height: 200px;
     background-color: #d1d5db;
     margin-bottom: 24px;
@@ -32,11 +37,7 @@
     justify-content: center;
 }
 
-.map-placeholder span {
-    font-size: 0.875rem;
-    color: #4b5563;
-}
-
+/* Formulář */
 .report-form {
     width: 100%;
     max-width: 400px;
@@ -45,6 +46,7 @@
     gap: 12px;
 }
 
+/* Input a Textarea */
 .report-form input,
 .report-form textarea {
     width: 100%;
@@ -52,8 +54,10 @@
     border: 1px solid #ccc;
     border-radius: 6px;
     font-size: 14px;
+    box-sizing: border-box; /* Zabrání "přetečení" obsahu */
 }
 
+/* Tlačítko */
 .report-form button {
     background-color: #1a202c;
     color: white;
@@ -67,4 +71,32 @@
 
 .report-form button:hover {
     background-color: #2d3748;
+}
+
+/* 📱 **Responzivita pro malé mobily (pod 470px)** */
+@media (max-width: 470px) {
+    .main-content {
+        padding: 16px;
+        max-width: 100%;
+    }
+
+    .map-placeholder {
+        height: 150px;
+    }
+
+    .report-form {
+        max-width: 100%;
+        padding: 0 10px;
+    }
+
+    .report-form input,
+    .report-form textarea {
+        font-size: 13px; /* Menší písmo na úzkých displejích */
+        padding: 8px; /* O něco menší padding */
+    }
+
+    .report-form button {
+        font-size: 14px;
+        padding: 10px;
+    }
 }

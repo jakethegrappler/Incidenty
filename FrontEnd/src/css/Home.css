@@ -12,6 +12,8 @@
     align-items: center;
     width: 100%;
 }
+
+/* Mapa */
 .map-placeholder {
     width: 100%;
     max-width: 400px;
@@ -24,8 +26,7 @@
     justify-content: center;
 }
 
-
-
+/* Dropdown */
 .dropdown-container {
     position: relative;
 }
@@ -40,6 +41,7 @@
     cursor: pointer;
 }
 
+/* Dropdown menu */
 .dropdown-menu {
     position: absolute;
     top: 110%;
@@ -65,13 +67,16 @@
     background-color: #f0f0f0;
 }
 
+/* Označený typ incidentu */
 .selected-type {
     margin-top: 0.5rem;
     font-weight: bold;
 }
 
+/* Obrázek mapy */
 .map-image {
     margin-top: 2rem;
+    width: 100%;
 }
 
 .map-img {
@@ -79,4 +84,28 @@
     height: auto;
     border: 1px solid #ccc;
     border-radius: 6px;
+}
+
+/* 📱 **Responzivita pro mobily** */
+@media (max-width: 768px) {
+    .main-wrapper {
+        padding: 1rem;
+    }
+
+    .map-placeholder {
+        height: 150px;
+    }
+
+    .dropdown-toggle {
+        font-size: 13px;
+        padding: 8px;
+    }
+
+    .map-image {
+        max-width: 100%;
+    }
+
+    .map-img {
+        height: auto;
+    }
 }
