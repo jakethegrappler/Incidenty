@@ -1,6 +1,8 @@
 package cz.cvut.fel.incidenty.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,8 +10,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "admin")
+@Entity
+//@Table(name = "admins")
 public class Admin extends User {
+
     @Column(nullable = false)
     private String firstName;
 

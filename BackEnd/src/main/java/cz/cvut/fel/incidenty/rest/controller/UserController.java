@@ -1,0 +1,61 @@
+package cz.cvut.fel.incidenty.rest.controller;
+
+import cz.cvut.fel.incidenty.dto.AuthRequestDto;
+import cz.cvut.fel.incidenty.dto.UserDto;
+import cz.cvut.fel.incidenty.model.User;
+import cz.cvut.fel.incidenty.service.UserService;
+import cz.cvut.fel.incidenty.config.security.JwtUtil;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@RestController
+@RequestMapping("/user")
+@RequiredArgsConstructor
+public class UserController {
+
+    private final UserService userService;
+    private final JwtUtil jwtUtil;
+    private final AuthenticationManager authenticationManager;
+
+    @PostMapping("/register")
+    public ResponseEntity<Map<String, String>> register(@RequestBody UserDto userDto) {
+        userService.register(userDto);
+
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(userDto.email(), userDto.password())
+        );
+
+        UserDetails userDetails = userService.loadUserByUsername(userDto.email());
+        String token = jwtUtil.generateToken(userDetails);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("token", token);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Map<String, String>> login(@RequestBody AuthRequestDto authRequestDto) {
+        String email = authRequestDto.email();
+        String password = authRequestDto.password();
+
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+
+        UserDetails userDetails = userService.loadUserByUsername(email);
+        String token = jwtUtil.generateToken(userDetails);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("token", token);
+
+        return ResponseEntity.ok(response);
+    }
+
+}

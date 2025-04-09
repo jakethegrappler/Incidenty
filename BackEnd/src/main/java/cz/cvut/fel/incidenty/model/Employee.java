@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Inheritance(strategy = InheritanceType.JOINED)
-@Table(name = "users")
+//@Table(name = "users")
 @Entity(name = "employee")
 public class Employee extends User {
     @Column(nullable = false)
