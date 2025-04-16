@@ -12,9 +12,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @Inheritance(strategy = InheritanceType.JOINED)
-//@Table(name = "users")
-@Entity(name = "student")
+@Entity
+@Table(name = "students")
 public class Student extends User {
+
     @Column(nullable = false)
     private String firstName;
 

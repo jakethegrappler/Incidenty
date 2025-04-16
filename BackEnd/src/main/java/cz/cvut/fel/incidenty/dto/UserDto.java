@@ -8,5 +8,6 @@ public record UserDto(
         String password,
         String firstName,
         String lastName,
-        Role role
+        Role role,
+        String phoneNumber
 ) {}
