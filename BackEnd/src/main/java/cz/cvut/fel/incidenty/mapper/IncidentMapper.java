@@ -9,6 +9,8 @@ import org.mapstruct.Mapper;
  */
 @Mapper(componentModel = "spring")
 public interface IncidentMapper {
+
     IncidentDto toDto(Incident incidentEntity);
+
     Incident toEntity(IncidentDto incidentDto);
 }

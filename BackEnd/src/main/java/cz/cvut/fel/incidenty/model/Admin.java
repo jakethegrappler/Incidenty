@@ -11,8 +11,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-//@Table(name = "admins")
+@Table(name = "admins")
 public class Admin extends User {
+
+    @Column(nullable = false)
+    private String phoneNumber;
 
     @Column(nullable = false)
     private String firstName;

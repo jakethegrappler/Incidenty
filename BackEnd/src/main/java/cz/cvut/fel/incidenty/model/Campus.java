@@ -8,7 +8,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "campus")
+@Entity
 public class Campus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

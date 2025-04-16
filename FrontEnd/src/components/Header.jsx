@@ -21,7 +21,8 @@ function Header() {
                     <ul className="dropdown-nav">
                         <li><a href="/home">Hlavní stránka</a></li>
                         <li><a href="/report">Nahlasit</a></li>
-                        <li><a href="/history">Dalsi idk</a></li>
+                        <li><a href="/registrace">Registrace</a></li>
+                        <li><a href="/login">Login</a></li>
                     </ul>
                 )}
             </div>

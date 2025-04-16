@@ -7,7 +7,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity(name = "diagram")
+@Entity
 public class Diagram {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

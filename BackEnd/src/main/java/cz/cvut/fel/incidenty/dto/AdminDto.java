@@ -5,6 +5,8 @@ public record AdminDto (
     String firstName,
     String lastName,
     String email,
-    String password
+    String password,
+    String phoneNumber
+
 
 ){}
