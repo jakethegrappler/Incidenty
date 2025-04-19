@@ -1,79 +1,75 @@
-.registration-container {
-    max-width: 400px;
-    margin: 3rem auto;
-    padding: 2rem;
+.registration-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    min-height: calc(100vh - 100px); /* prostor pro header a footer */
+    box-sizing: border-box;
     background-color: #f9f9f9;
+}
+
+.registration-container {
+    background-color: white;
+    padding: 30px;
     border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    font-family: 'Segoe UI', sans-serif;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 480px;
+    box-sizing: border-box;
 }
 
 .registration-container h2 {
     text-align: center;
-    margin-bottom: 1.5rem;
-    color: #1a202c;
+    margin-bottom: 20px;
 }
 
-form {
+.registration-container form {
     display: flex;
     flex-direction: column;
     gap: 12px;
 }
 
-input,
-select,
-button {
+.registration-container input,
+.registration-container select,
+.registration-container button {
     padding: 10px;
     font-size: 14px;
-    border-radius: 6px;
+    border-radius: 5px;
     border: 1px solid #ccc;
-    width: 100%;
-    box-sizing: border-box;
 }
 
-input:focus,
-select:focus {
-    border-color: #4a90e2;
-    outline: none;
-}
-
-button {
-    background-color: #1a202c;
+.registration-container button {
+    background-color: #1e293b;
     color: white;
     font-weight: bold;
-    border: none;
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
 
-button:hover {
-    background-color: #2d3748;
+.registration-container button:hover {
+    background-color: #334155;
 }
 
 .error {
-    font-size: 12px;
     color: red;
-    margin-top: -8px;
-    margin-bottom: 4px;
+    font-size: 12px;
+    margin: 0;
 }
 
 .success {
-    font-size: 14px;
     color: green;
+    font-size: 14px;
     text-align: center;
-    margin-top: 1rem;
+    margin-top: 10px;
 }
 
-/* 🌐 Responsivita */
+/* Responsivita */
 @media (max-width: 480px) {
     .registration-container {
-        margin: 2rem 1rem;
-        padding: 1.5rem;
+        padding: 20px;
     }
 
-    input,
-    select,
-    button {
-        font-size: 13px;
+    .registration-container h2 {
+        font-size: 20px;
     }
 }
