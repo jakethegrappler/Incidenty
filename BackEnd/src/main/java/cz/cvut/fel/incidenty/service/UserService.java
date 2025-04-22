@@ -8,6 +8,7 @@ import cz.cvut.fel.incidenty.model.Student;
 import cz.cvut.fel.incidenty.model.User;
 import cz.cvut.fel.incidenty.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -66,5 +67,13 @@ public class UserService implements UserDetailsService {
                 user.getPassword(),
                 authorities
         );
+    }
+
+    public User login(String email, String password) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(email + " nenalezen."));
+              if (passwordEncoder.matches(password, user.getPassword())) {
+                  return user;
+              }
+              throw new BadCredentialsException("Wrong password");
     }
 }

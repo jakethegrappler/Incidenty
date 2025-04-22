@@ -33,16 +33,18 @@ const Login = () => {
             }
 
             const data = await response.json();
-            const token = data.token;
+            // const token = data.token;
+            console.log(data);
+            await login(data.token, data.role);
 
             // dekódujeme JWT (nebo můžeš poslat i uživatelská data z backendu)
-            const payload = JSON.parse(atob(token.split(".")[1]));
-
-            login({
-                email: payload.sub,
-                token,
-                role: payload.role,
-            });
+            // const payload = JSON.parse(atob(token.split(".")[1]));
+            //
+            // login({
+            //     email: payload.sub,
+            //     token,
+            //     role: payload.role,
+            // });
 
             navigate("/profile");
         } catch (err) {

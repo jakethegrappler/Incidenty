@@ -1,12 +1,13 @@
-import { useAuth } from "../auth/useAuth";
+// import { useAuth } from "../auth/useAuth";
+import {useState} from "react";
 
 const Profile = () => {
-    const { user } = useAuth();
+    const { role, setRole } = useState();
 
     return (
         <div className="profile-wrapper">
-            <h2>Vítej, {user?.email}</h2>
-            <p>Role: {user?.role}</p>
+            <h2>Vítej, {}</h2>
+            <p>Role: {role}</p>
         </div>
     );
 };

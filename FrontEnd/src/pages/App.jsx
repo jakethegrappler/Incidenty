@@ -7,10 +7,9 @@ import ReportForm from "./ReportForm.jsx";
 import Registration from "./Registration.jsx";
 import Login from "./Login.jsx";
 import Profile from "./Profile.jsx";
-import { AuthProvider } from "../auth/AuthContext.jsx"
 function App() {
     return (
-        <AuthProvider>
+        <>
             <Header />
             <Routes>
                 <Route path="/home" element={<Home />} />
@@ -22,7 +21,7 @@ function App() {
                 {/* Zde můžeš přidat další routy */}
             </Routes>
             <Footer />
-        </AuthProvider>
+            </>
     );
 }
 

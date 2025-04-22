@@ -27,8 +27,8 @@ public class DBInit implements CommandLineRunner {
         // Uživatelské účty
         Admin admin = new Admin();
         admin.setUsername("admin");
-        admin.setEmail("admin@example.com");
-        admin.setPassword(passwordEncoder.encode("admin123"));
+        admin.setEmail("nedbal.jakub@gmail.com");
+        admin.setPassword(passwordEncoder.encode("heslo"));
         admin.setRole(Role.ROLE_ADMIN);
         admin.setFirstName("Admin");
         admin.setLastName("User");

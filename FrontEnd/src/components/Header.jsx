@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/useAuth.js";
 import "../css/Header.css";
 import logo from "../assets/Incidenty-logo.png";
-!@
+
 function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
     const navigate = useNavigate();
@@ -11,6 +11,7 @@ function Header() {
     const { isLoggedIn, logout } = useAuth(); // ⬅️ nový způsob
 
     const toggleMenu = () => {
+        // console.log(isLoggedIn);
         setMenuOpen((prev) => !prev);
     };
 
@@ -34,7 +35,7 @@ function Header() {
                         <li><a href="/report">Nahlásit</a></li>
                         {isLoggedIn ? (
                             <>
-                                <li><a href="/profil">Profil</a></li>
+                                <li><a href="/profile">Profil</a></li>
                                 <li><button onClick={handleLogout} className="logout-btn">Odhlásit se</button></li>
                             </>
                         ) : (
