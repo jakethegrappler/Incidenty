@@ -63,4 +63,16 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping(value = "/info", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<User> getUserInfo(@RequestHeader("Authorization") String tokenHeader) {
+        String token = tokenHeader.replace("Bearer ", "");
+        String email = jwtUtil.extractUsername(token);
+
+        User user = userService.findByEmail(email); // metoda, která vrací entitu User
+        return ResponseEntity.ok(user);
+    }
+
 }
+
+
+

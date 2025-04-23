@@ -39,7 +39,7 @@ function Header() {
                                 <li><button onClick={handleLogout} className="logout-btn">Odhlásit se</button></li>
                             </>
                         ) : (
-                            <>
+                            <>`
                                 <li><a href="/registrace">Registrace</a></li>
                                 <li><a href="/login">Login</a></li>
                             </>
