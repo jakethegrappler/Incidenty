@@ -13,7 +13,8 @@ public class SecurityEndpoints {
     public static final String[] PUBLIC_URLS = {
             "/user/register",
             "/user/login",
-            "/art"
+            "/art",
+            "incident/create"
     };
 
     public static final String[] ADMIN_URLS = {

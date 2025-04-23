@@ -28,7 +28,7 @@ public class Incident {
     @Column(nullable = false)
     private String position;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String reporter;
 
     @Column(nullable = false)
@@ -42,4 +42,7 @@ public class Incident {
     private String solution;
 
     private String note;
+
+    private String photoPath;
+
 }

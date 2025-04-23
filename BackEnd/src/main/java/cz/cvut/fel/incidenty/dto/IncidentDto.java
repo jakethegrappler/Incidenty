@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
- * Data Transfer Object for Art entity.
+ * Data Transfer Object for Incident entity.
  */
 
 public record IncidentDto(
@@ -18,7 +18,9 @@ public record IncidentDto(
         String izs, //IZS=informovana zachranna slozka
         String detail,
         String solution,
-        String note
+        String note,
+        String photoPath
+
 
 ) {
 

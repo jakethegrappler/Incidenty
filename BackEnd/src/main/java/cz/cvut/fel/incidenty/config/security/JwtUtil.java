@@ -29,7 +29,7 @@ public class JwtUtil {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    private static final long ACCESS_TOKEN_VALIDITY = 30 * 60 * 1000; // 30 minut
+    private static final long ACCESS_TOKEN_VALIDITY = 2 * 60 * 60 * 1000; // 120 minut
     private static final long REFRESH_TOKEN_VALIDITY = 30L * 24 * 60 * 60 * 1000; // 30 dní
 
     public String extractUsername(String token) {
