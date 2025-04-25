@@ -1,43 +1,63 @@
-import {createContext, useEffect, useState} from "react";
+import { createContext, useEffect, useState } from "react";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [role, setRole] = useState(null)
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
-    const [token , setToken] = useState(null)
+    const [token, setToken] = useState(null);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [role, setRole] = useState(null);
+    const [user, setUser] = useState(null); // <- přidáno
 
-    
     useEffect(() => {
         const token = localStorage.getItem("token");
-
         if (token) {
             setToken(token);
-            setIsLoggedIn(true)
-            
+            setIsLoggedIn(true);
+            fetchUserInfo(token); // <- nová funkce
         } else {
-            setIsLoggedIn(false)
+            setIsLoggedIn(false);
         }
-    }, [])
-    
-    
-    
-    const login = (token, role) => {
-        setRole(role);
+    }, []);
+
+    const fetchUserInfo = async (token) => {
+        try {
+            const response = await fetch("http://localhost:8080/user/info", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (response.ok) {
+                const userData = await response.json();
+                setUser(userData);
+                setRole(userData.role); // volitelně
+            } else {
+                console.error("Chyba při získání údajů o uživateli");
+            }
+        } catch (error) {
+            console.error("Chyba:", error);
+        }
+    };
+
+    const login = (token) => {
         setToken(token);
-        localStorage.setItem('token', token);
         setIsLoggedIn(true);
-        // localStorage.setItem("user", JSON.stringify(userData));
+        localStorage.setItem("token", token);
+        fetchUserInfo(token);
     };
 
     const logout = () => {
+        setToken(null);
+        setUser(null);
         setRole(null);
         localStorage.removeItem("token");
         setIsLoggedIn(false);
     };
 
     return (
-        <AuthContext.Provider value={{ role, token, login, logout, isLoggedIn }}>
+        <AuthContext.Provider value={{ token, isLoggedIn, login, logout, role, user }}>
             {children}
         </AuthContext.Provider>
     );
