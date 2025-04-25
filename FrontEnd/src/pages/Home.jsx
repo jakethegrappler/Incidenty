@@ -1,9 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../css/Home.css";
 
 function MapPage() {
-    const [selectedIncident, setSelectedIncident] = useState("Napadení");
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const navigate = useNavigate();
 
     const incidentTypes = [
         "Napadení",
@@ -19,8 +20,8 @@ function MapPage() {
     };
 
     const selectIncident = (type) => {
-        setSelectedIncident(type);
         setDropdownOpen(false);
+        navigate("/report", { state: { selectedType: type } });
     };
 
     return (
@@ -44,10 +45,8 @@ function MapPage() {
                                 ))}
                             </ul>
                         )}
-                        <div className="selected-type">{selectedIncident}</div>
                     </div>
                 </div>
-
             </main>
         </div>
     );

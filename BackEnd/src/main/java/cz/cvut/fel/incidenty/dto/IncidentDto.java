@@ -19,7 +19,8 @@ public record IncidentDto(
         String detail,
         String solution,
         String note,
-        String photoPath
+        String photoPath,
+        String customPhoneNumber
 
 
 ) {

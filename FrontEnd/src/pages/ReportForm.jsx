@@ -1,30 +1,29 @@
 import { useEffect, useState } from "react";
-import { useAuth } from "../auth/useAuth"; // uprav cestu dle umístění
+import { useAuth } from "../auth/useAuth";
+import { useLocation } from "react-router-dom";
 import "../css/ReportForm.css";
 
 function ReportForm() {
     const { user } = useAuth();
+    const location = useLocation();
+    const selectedType = location.state?.selectedType || "NEZNÁMÝ";
 
     const [form, setForm] = useState({
         datetime: "",
         location: "",
-        phone: "",
+        customPhoneNumber: "",
         description: "",
         reporter: "",
+        type: selectedType,
         photo: null,
     });
 
-    // Předvyplnění údajů při načtení stránky, pokud je uživatel přihlášen
     useEffect(() => {
-
         if (user) {
-            console.log(user.email);
-            console.log(user.phoneNumber);
-            console.log(user.role);
             setForm((prev) => ({
                 ...prev,
                 reporter: user.email,
-                phone: user.phoneNumber || "",
+                customPhoneNumber: user.phoneNumber || "",
             }));
         }
     }, [user]);
@@ -41,36 +40,32 @@ function ReportForm() {
         e.preventDefault();
 
         const formData = new FormData();
-
         const incidentDto = {
             date: form.datetime,
-            type: form.type || "NEZNÁMÝ", // nebo co používáš
+            type: form.type,
             position: form.location,
-            reporter: user?.email || null,
-            izs: "NEZNÁMÉ",
+            reporter: user?.email || "Anonym",
+            izs: "TBA",
             detail: form.description,
             solution: null,
             note: null,
-            issueDate: null
+            issueDate: null,
+            customPhoneNumber: !user ? form.customPhoneNumber || null : null,
         };
 
-        formData.append("incident", new Blob(
-            [JSON.stringify(incidentDto)],
-            { type: "application/json" }
-        ));
-
-        if (form.photo) {
-            formData.append("photo", form.photo);
-        }
-
+        formData.append("incident", new Blob([JSON.stringify(incidentDto)], { type: "application/json" }));
+        if (form.photo) formData.append("photo", form.photo);
 
         try {
+            const headers = {};
+            const token = localStorage.getItem("token");
+            if (token) {
+                headers["Authorization"] = `Bearer ${token}`;
+            }
             const response = await fetch("http://localhost:8080/incident/create", {
                 method: "POST",
                 body: formData,
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
+                headers: headers,
             });
 
             if (!response.ok) throw new Error(await response.text());
@@ -79,9 +74,10 @@ function ReportForm() {
             setForm({
                 datetime: "",
                 location: "",
-                phone: "",
+                customPhoneNumber: "",
                 description: "",
-                reporter: user?.email || "",
+                reporter: user?.email || form.reporter || "Anonym",
+                type: selectedType,
                 photo: null,
             });
         } catch (err) {
@@ -93,7 +89,7 @@ function ReportForm() {
     return (
         <div className="main-wrapper">
             <main className="main-content">
-                <h1>Chci nahlásit: NAPADENÍ</h1>
+                <h1>Chci nahlásit: {form.type.toUpperCase()}</h1>
 
                 <div className="map-placeholder">
                     <span>Mapa bude doplněna</span>
@@ -105,46 +101,36 @@ function ReportForm() {
                         name="datetime"
                         value={form.datetime}
                         onChange={handleChange}
-                        placeholder="Datum a čas incidentu"
-                        required
-                    />
+                        required />
                     <input
                         type="text"
                         name="location"
+                        placeholder="Lokace incidentu"
                         value={form.location}
                         onChange={handleChange}
-                        placeholder="Místo incidentu"
-                        required
-                    />
-                    <input
-                        type="text"
-                        name="phone"
-                        value={form.phone}
-                        onChange={handleChange}
-                        placeholder="Telefon"
-                        required
-                    />
+                        required />
+
+                    {!user && (
+                        <input
+                            type="text"
+                            name="customPhoneNumber"
+                            value={form.customPhoneNumber}
+                            onChange={handleChange}
+                            placeholder="Telefon (nepovinné)"
+                        />
+                    )}
+
                     <input
                         type="email"
                         name="reporter"
                         value={form.reporter}
                         onChange={handleChange}
-                        placeholder="E-mail oznamovatele"
+                        placeholder="E-mail"
                         required
                     />
-                    <textarea
-                        name="description"
-                        value={form.description}
-                        onChange={handleChange}
-                        placeholder="Popis události"
-                        required
-                    />
-                    <input
-                        type="file"
-                        name="photo"
-                        accept="image/*"
-                        onChange={handleChange}
-                    />
+
+                    <textarea name="description" value={form.description} onChange={handleChange} required />
+                    <input type="file" name="photo" accept="image/*" onChange={handleChange} />
                     <button type="submit">Nahlásit</button>
                 </form>
             </main>

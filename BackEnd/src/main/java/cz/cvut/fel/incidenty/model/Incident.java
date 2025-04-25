@@ -28,11 +28,13 @@ public class Incident {
     @Column(nullable = false)
     private String position;
 
-    @Column(nullable = true)
-    private String reporter;
+
 
     @Column(nullable = false)
     private String izs;
+
+    @Column
+    private String reporter;
 
     // Vyplňuje se později při řešení
     private LocalDateTime issueDate;
@@ -44,5 +46,7 @@ public class Incident {
     private String note;
 
     private String photoPath;
+
+    private String customPhoneNumber;
 
 }
