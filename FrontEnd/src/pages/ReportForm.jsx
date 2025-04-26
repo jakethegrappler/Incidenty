@@ -18,6 +18,8 @@ function ReportForm() {
         photo: null,
     });
 
+    const [successMessage, setSuccessMessage] = useState("");
+
     useEffect(() => {
         if (user) {
             setForm((prev) => ({
@@ -44,13 +46,13 @@ function ReportForm() {
             date: form.datetime,
             type: form.type,
             position: form.location,
-            reporter: user?.email || "Anonym",
+            reporter: user ? user.email : "Anonym",
             izs: "TBA",
             detail: form.description,
             solution: null,
             note: null,
             issueDate: null,
-            customPhoneNumber: !user ? form.customPhoneNumber || null : null,
+            customPhoneNumber: user?.phoneNumber || form.customPhoneNumber,
         };
 
         formData.append("incident", new Blob([JSON.stringify(incidentDto)], { type: "application/json" }));
@@ -62,6 +64,7 @@ function ReportForm() {
             if (token) {
                 headers["Authorization"] = `Bearer ${token}`;
             }
+
             const response = await fetch("http://localhost:8080/incident/create", {
                 method: "POST",
                 body: formData,
@@ -70,16 +73,20 @@ function ReportForm() {
 
             if (!response.ok) throw new Error(await response.text());
 
-            alert("Incident byl úspěšně nahlášen!");
+            setSuccessMessage("Incident byl úspěšně nahlášen!");
             setForm({
                 datetime: "",
                 location: "",
                 customPhoneNumber: "",
                 description: "",
-                reporter: user?.email || form.reporter || "Anonym",
+                reporter: user?.email || "",
                 type: selectedType,
                 photo: null,
             });
+
+            // Success zpráva zmizí po pár sekundách
+            setTimeout(() => setSuccessMessage(""), 5000);
+
         } catch (err) {
             console.error("Chyba:", err);
             alert("Nahlášení selhalo.");
@@ -87,13 +94,19 @@ function ReportForm() {
     };
 
     return (
-        <div className="main-wrapper">
-            <main className="main-content">
-                <h1>Chci nahlásit: {form.type.toUpperCase()}</h1>
+        <div className="page-wrapper fade-in">
+            <div className="form-container">
+                <h1 className="form-title">Nahlásit: {form.type.toUpperCase()}</h1>
 
                 <div className="map-placeholder">
                     <span>Mapa bude doplněna</span>
                 </div>
+
+                {successMessage && (
+                    <div className="success-message animate-success">
+                        {successMessage}
+                    </div>
+                )}
 
                 <form onSubmit={handleSubmit} className="report-form">
                     <input
@@ -101,39 +114,40 @@ function ReportForm() {
                         name="datetime"
                         value={form.datetime}
                         onChange={handleChange}
-                        required />
+                        required
+                    />
                     <input
                         type="text"
                         name="location"
                         placeholder="Lokace incidentu"
                         value={form.location}
                         onChange={handleChange}
-                        required />
-
-                    {!user && (
-                        <input
-                            type="text"
-                            name="customPhoneNumber"
-                            value={form.customPhoneNumber}
-                            onChange={handleChange}
-                            placeholder="Telefon (nepovinné)"
-                        />
-                    )}
-
-                    <input
-                        type="email"
-                        name="reporter"
-                        value={form.reporter}
-                        onChange={handleChange}
-                        placeholder="E-mail"
                         required
                     />
-
-                    <textarea name="description" value={form.description} onChange={handleChange} required />
-                    <input type="file" name="photo" accept="image/*" onChange={handleChange} />
-                    <button type="submit">Nahlásit</button>
+                    <input
+                        type="text"
+                        name="customPhoneNumber"
+                        value={form.customPhoneNumber}
+                        onChange={handleChange}
+                        placeholder="Telefonní číslo"
+                        required
+                    />
+                    <textarea
+                        name="description"
+                        value={form.description}
+                        onChange={handleChange}
+                        placeholder="Popis události"
+                        required
+                    />
+                    <input
+                        type="file"
+                        name="photo"
+                        accept="image/*"
+                        onChange={handleChange}
+                    />
+                    <button type="submit">Nahlásit incident</button>
                 </form>
-            </main>
+            </div>
         </div>
     );
 }

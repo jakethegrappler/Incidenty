@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
+import { useAuth } from "../auth/useAuth";
 import "../css/Profile.css";
 
 const Profile = () => {
-    const [user, setUser] = useState(null);
+    const { user } = useAuth();
+    const [localUser, setLocalUser] = useState(null);
 
     useEffect(() => {
         const fetchUserInfo = async () => {
@@ -18,7 +20,7 @@ const Profile = () => {
 
                 if (response.ok) {
                     const userData = await response.json();
-                    setUser(userData);
+                    setLocalUser(userData);
                 } else {
                     console.error("Chyba při načítání profilu:", await response.text());
                 }
@@ -27,38 +29,52 @@ const Profile = () => {
             }
         };
 
-        fetchUserInfo();
-    }, []);
+        if (!user) {
+            fetchUserInfo();
+        } else {
+            setLocalUser(user);
+        }
+    }, [user]);
 
-    if (!user) {
-        return <div className="profile-wrapper"><p>Načítání údajů...</p></div>;
+    if (!localUser) {
+        return (
+            <div className="page-wrapper fade-in">
+                <div className="profile-loading">Načítání údajů...</div>
+            </div>
+        );
     }
 
     return (
-        <div className="profile-wrapper">
-            <div className="profile-header">
-                <h2>Vítej, {user.firstName}!</h2>
-                <p>Zde najdeš své uživatelské údaje.</p>
-            </div>
+        <div className="page-wrapper fade-in">
+            <div className="profile-container">
+                <h2 className="profile-title">Profil uživatele</h2>
 
-            <div className="profile-card">
-                <div className="label">Jméno:</div>
-                <div className="value">{user.firstName}</div>
-
-                <div className="label">Příjmení:</div>
-                <div className="value">{user.lastName}</div>
-
-                <div className="label">Uživatelské jméno:</div>
-                <div className="value">{user.username}</div>
-
-                <div className="label">Email:</div>
-                <div className="value">{user.email}</div>
-
-                <div className="label">Telefon:</div>
-                <div className="value">{user.phoneNumber}</div>
-
-                <div className="label">Role:</div>
-                <div className="value">{user.role}</div>
+                <div className="profile-section">
+                    <div className="profile-item">
+                        <span className="profile-label">👤 Jméno:</span>
+                        <span>{localUser.firstName}</span>
+                    </div>
+                    <div className="profile-item">
+                        <span className="profile-label">👥 Příjmení:</span>
+                        <span>{localUser.lastName}</span>
+                    </div>
+                    <div className="profile-item">
+                        <span className="profile-label">📛 Uživatelské jméno:</span>
+                        <span>{localUser.username}</span>
+                    </div>
+                    <div className="profile-item">
+                        <span className="profile-label">📧 Email:</span>
+                        <span>{localUser.email}</span>
+                    </div>
+                    <div className="profile-item">
+                        <span className="profile-label">📞 Telefon:</span>
+                        <span>{localUser.phoneNumber}</span>
+                    </div>
+                    <div className="profile-item">
+                        <span className="profile-label">🛡️ Role:</span>
+                        <span>{localUser.role}</span>
+                    </div>
+                </div>
             </div>
         </div>
     );

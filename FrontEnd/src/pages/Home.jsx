@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../css/Home.css";
+import "../css/Home.css"; // (zatím necháme, bude minimální)
 
 function MapPage() {
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -25,8 +25,8 @@ function MapPage() {
     };
 
     return (
-        <div className="main-wrapper">
-            <main className="main-content">
+        <div className="page-wrapper fade-in">
+            <main className="page-content">
                 <div className="map-placeholder">
                     <span>Mapa bude doplněna</span>
                 </div>

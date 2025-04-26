@@ -33,18 +33,7 @@ const Login = () => {
             }
 
             const data = await response.json();
-            // const token = data.token;
-            console.log(data);
             await login(data.token, data.role);
-
-            // dekódujeme JWT (nebo můžeš poslat i uživatelská data z backendu)
-            // const payload = JSON.parse(atob(token.split(".")[1]));
-            //
-            // login({
-            //     email: payload.sub,
-            //     token,
-            //     role: payload.role,
-            // });
 
             navigate("/profile");
         } catch (err) {
@@ -53,24 +42,30 @@ const Login = () => {
     };
 
     return (
-        <div className="login-wrapper">
-            <h2>Přihlášení</h2>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="E-mail"
-                    onChange={handleChange}
-                />
-                <input
-                    type="password"
-                    name="password"
-                    placeholder="Heslo"
-                    onChange={handleChange}
-                />
-                <button type="submit">Přihlásit se</button>
-                {error && <p className="error">{error}</p>}
-            </form>
+        <div className="page-wrapper fade-in">
+            <div className="login-card">
+                <h2>Přihlášení</h2>
+                <form onSubmit={handleSubmit} className="login-form">
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="E-mail"
+                        value={credentials.email}
+                        onChange={handleChange}
+                        required
+                    />
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Heslo"
+                        value={credentials.password}
+                        onChange={handleChange}
+                        required
+                    />
+                    <button type="submit">Přihlásit se</button>
+                    {error && <div className="error-message">{error}</div>}
+                </form>
+            </div>
         </div>
     );
 };

@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../css/Registration.css';
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "../css/Registration.css";
 
 const Registration = () => {
     const navigate = useNavigate();
@@ -27,34 +27,28 @@ const Registration = () => {
     };
 
     const validateForm = () => {
-        let errors = {};
-
-        if (!formData.firstName) errors.firstName = 'Křestní jméno je povinné.';
-        if (!formData.lastName) errors.lastName = 'Příjmení je povinné.';
-        if (!formData.username) errors.username = 'Uživatelské jméno je povinné.';
-
+        const errors = {};
+        if (!formData.firstName) errors.firstName = "Křestní jméno je povinné.";
+        if (!formData.lastName) errors.lastName = "Příjmení je povinné.";
+        if (!formData.username) errors.username = "Uživatelské jméno je povinné.";
         if (!formData.phoneNumber) {
-            errors.phoneNumber = 'Telefonní číslo je povinné.';
+            errors.phoneNumber = "Telefonní číslo je povinné.";
         } else if (!/^\d+$/.test(formData.phoneNumber)) {
-            errors.phoneNumber = 'Telefonní číslo může obsahovat pouze číslice.';
+            errors.phoneNumber = "Telefonní číslo může obsahovat pouze číslice.";
         }
-
         if (!formData.email) {
-            errors.email = 'E-mail je povinný.';
+            errors.email = "E-mail je povinný.";
         } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-            errors.email = 'E-mail není platný.';
+            errors.email = "E-mail není platný.";
         }
-
         if (!formData.password) {
-            errors.password = 'Heslo je povinné.';
+            errors.password = "Heslo je povinné.";
         } else if (formData.password.length < 6) {
-            errors.password = 'Heslo musí mít alespoň 6 znaků.';
+            errors.password = "Heslo musí mít alespoň 6 znaků.";
         }
-
         if (formData.confirmPassword !== formData.password) {
-            errors.confirmPassword = 'Hesla se neshodují.';
+            errors.confirmPassword = "Hesla se neshodují.";
         }
-
         setFormErrors(errors);
         return Object.keys(errors).length === 0;
     };
@@ -97,30 +91,31 @@ const Registration = () => {
     };
 
     return (
-        <div className="registration-wrapper">
-            <div className="registration-container">
+        <div className="page-wrapper fade-in">
+            <div className="registration-card">
                 <h2>Registrace</h2>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} className="registration-form">
+
                     <input type="text" name="firstName" placeholder="Křestní jméno" onChange={handleChange} />
-                    {formErrors.firstName && <p className="error">{formErrors.firstName}</p>}
+                    {formErrors.firstName && <div className="error-message">{formErrors.firstName}</div>}
 
                     <input type="text" name="lastName" placeholder="Příjmení" onChange={handleChange} />
-                    {formErrors.lastName && <p className="error">{formErrors.lastName}</p>}
+                    {formErrors.lastName && <div className="error-message">{formErrors.lastName}</div>}
 
                     <input type="text" name="username" placeholder="Uživatelské jméno" onChange={handleChange} />
-                    {formErrors.username && <p className="error">{formErrors.username}</p>}
+                    {formErrors.username && <div className="error-message">{formErrors.username}</div>}
 
                     <input type="text" name="phoneNumber" placeholder="Telefon" onChange={handleChange} />
-                    {formErrors.phoneNumber && <p className="error">{formErrors.phoneNumber}</p>}
+                    {formErrors.phoneNumber && <div className="error-message">{formErrors.phoneNumber}</div>}
 
                     <input type="email" name="email" placeholder="E-mail" onChange={handleChange} />
-                    {formErrors.email && <p className="error">{formErrors.email}</p>}
+                    {formErrors.email && <div className="error-message">{formErrors.email}</div>}
 
                     <input type="password" name="password" placeholder="Heslo" onChange={handleChange} />
-                    {formErrors.password && <p className="error">{formErrors.password}</p>}
+                    {formErrors.password && <div className="error-message">{formErrors.password}</div>}
 
                     <input type="password" name="confirmPassword" placeholder="Potvrzení hesla" onChange={handleChange} />
-                    {formErrors.confirmPassword && <p className="error">{formErrors.confirmPassword}</p>}
+                    {formErrors.confirmPassword && <div className="error-message">{formErrors.confirmPassword}</div>}
 
                     <select name="role" value={formData.role} onChange={handleChange}>
                         <option value="ROLE_STUDENT">Student</option>
@@ -129,7 +124,8 @@ const Registration = () => {
                     </select>
 
                     <button type="submit">Registrovat se</button>
-                    {isSubmitted && <p className="success">Registrace proběhla úspěšně!</p>}
+
+                    {isSubmitted && <div className="success-message">Registrace proběhla úspěšně!</div>}
                 </form>
             </div>
         </div>

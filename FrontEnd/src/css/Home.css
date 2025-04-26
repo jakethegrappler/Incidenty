@@ -1,111 +1,90 @@
-.main-wrapper {
-    display: flex;
+.page-wrapper {
     min-height: 100vh;
-    background-color: white;
-    flex-direction: column;
-    color: #000;
-}
-
-.main-content {
+    padding: 2rem;
+    background: var(--background-light);
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+}
+
+.page-content {
     width: 100%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
 }
 
 /* Mapa */
 .map-placeholder {
     width: 100%;
-    max-width: 400px;
-    height: 200px;
-    background-color: #d1d5db;
-    margin-bottom: 24px;
-    border-radius: 8px;
+    height: 300px;
+    background-color: var(--light-grey);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
     display: flex;
     align-items: center;
     justify-content: center;
+    font-weight: bold;
+    color: var(--text-color);
+    box-shadow: var(--box-shadow);
 }
 
 /* Dropdown */
 .dropdown-container {
     position: relative;
+    width: 100%;
+    max-width: 400px;
 }
 
 .dropdown-toggle {
-    background-color: #1e293b;
+    width: 100%;
+    background-color: var(--primary-color);
     color: white;
+    font-weight: bold;
+    padding: var(--padding-standard);
     border: none;
-    padding: 10px 16px;
-    border-radius: 6px;
-    font-size: 14px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
     cursor: pointer;
+    transition: background-color var(--transition-speed);
 }
 
-/* Dropdown menu */
+.dropdown-toggle:hover {
+    background-color: var(--primary-color-dark);
+}
+
 .dropdown-menu {
     position: absolute;
     top: 110%;
+    left: 0;
     right: 0;
-    background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    padding: 0;
-    margin-top: 0.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
     list-style: none;
-    z-index: 10;
-    width: 200px;
+    padding: 0;
+    margin-top: 8px;
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
 }
 
 .dropdown-menu li {
-    padding: 10px;
+    padding: var(--padding-standard);
+    text-align: center;
     cursor: pointer;
-    font-size: 14px;
+    transition: background var(--transition-speed);
 }
 
 .dropdown-menu li:hover {
-    background-color: #f0f0f0;
+    background-color: var(--light-grey);
 }
 
-/* Označený typ incidentu */
-.selected-type {
-    margin-top: 0.5rem;
-    font-weight: bold;
-}
-
-/* Obrázek mapy */
-.map-image {
-    margin-top: 2rem;
-    width: 100%;
-}
-
-.map-img {
-    max-width: 100%;
-    height: auto;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-}
-
-/* 📱 **Responzivita pro mobily** */
+/* Responsivita */
 @media (max-width: 768px) {
-    .main-wrapper {
-        padding: 1rem;
-    }
-
     .map-placeholder {
-        height: 150px;
-    }
-
-    .dropdown-toggle {
-        font-size: 13px;
-        padding: 8px;
-    }
-
-    .map-image {
-        max-width: 100%;
-    }
-
-    .map-img {
-        height: auto;
+        height: 200px;
     }
 }

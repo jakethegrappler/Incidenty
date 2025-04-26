@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import {href, useNavigate} from "react-router-dom";
 import { useAuth } from "../auth/useAuth.js";
 import "../css/Header.css";
 import logo from "../assets/Incidenty-logo.png";
@@ -20,10 +20,15 @@ function Header() {
         navigate("/home");
     };
 
+    function navigateHome() {
+        navigate("/home");
+    }
+
+
     return (
         <header className="header">
             <div className="logo-container">
-                <img src={logo} alt="logo picture" className="logo" />
+                <img src={logo} alt="logo picture" className="logo" onClick={navigateHome} />
             </div>
             <div className="menu-wrapper">
                 <button className="menu-toggle" onClick={toggleMenu}>
@@ -39,7 +44,7 @@ function Header() {
                                 <li><button onClick={handleLogout} className="logout-btn">Odhlásit se</button></li>
                             </>
                         ) : (
-                            <>`
+                            <>
                                 <li><a href="/registrace">Registrace</a></li>
                                 <li><a href="/login">Login</a></li>
                             </>

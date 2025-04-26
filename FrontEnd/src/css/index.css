@@ -1,0 +1,111 @@
+/* ========== CSS VARIABLES ========== */
+:root {
+    /* Barvy */
+    --primary-color: #3b82f6; /* hlavní modrá */
+    --primary-color-dark: #2563eb; /* tmavší modrá na hover */
+    --secondary-color: #6366f1; /* fialová sekundární */
+    --success-color: #22c55e; /* zelená úspěchu */
+    --danger-color: #ef4444; /* červená chyb */
+
+    --background-light: #f9fafb; /* světlé pozadí */
+    --background-dark: #1e293b; /* tmavé pozadí */
+    --input-background: #ffffff; /* barva políček */
+    --border-color: #e5e7eb; /* světlé orámování */
+    --light-grey: #f3f4f6; /* jemné pozadí sekcí */
+    --text-color: #1f2937; /* hlavní barva textu */
+
+    /* Vzhled komponent */
+    --border-radius: 10px;
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --padding-standard: 12px 20px;
+    --transition-speed: 0.3s;
+}
+
+/* ========== RESET ========== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--background-light);
+    color: var(--text-color);
+    min-height: 100vh;
+}
+
+/* ========== OBECNÉ ELEMENTY ========== */
+input, textarea, select, button {
+    font-family: inherit;
+    padding: var(--padding-standard);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    background: var(--input-background);
+    transition: all var(--transition-speed) ease;
+    outline: none;
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 8px rgba(59, 130, 246, 0.3);
+}
+
+/* Buttony */
+button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color var(--transition-speed);
+}
+
+button:hover {
+    background-color: var(--primary-color-dark);
+}
+
+/* ========== ZPRÁVY ========== */
+.success-message {
+    background-color: var(--success-color);
+    color: white;
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+    animation: slideDownFade 0.8s ease forwards;
+}
+
+/* ✨ Animace úspěchu */
+@keyframes slideDownFade {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+.error-message {
+    background-color: #fee2e2;
+    color: var(--danger-color);
+    padding: var(--padding-standard);
+    border-radius: var(--border-radius);
+    margin-top: 1rem;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* ========== ANIMACE ========== */
+.fade-in {
+    animation: fadeIn 0.8s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
