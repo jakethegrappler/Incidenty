@@ -5,6 +5,9 @@ const IncidentsPage = () => {
     const [incidents, setIncidents] = useState([]);
     const [editingIncident, setEditingIncident] = useState(null);
     const [form, setForm] = useState({ detail: "", solution: "", note: "" });
+    const [showToast, setShowToast] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
+
 
     useEffect(() => {
         fetchIncidents();
@@ -42,6 +45,20 @@ const IncidentsPage = () => {
         setForm((prev) => ({ ...prev, [name]: value }));
     };
 
+    const triggerToast = () => {
+        setShowToast(true);
+        setTimeout(() => {
+            setShowToast(false);
+        }, 2500);
+    };
+
+    const triggerErrorToast = (message) => {
+        setErrorMessage(message);
+        setTimeout(() => {
+            setErrorMessage("");
+        }, 3000);
+    };
+
     const handleSave = async () => {
         try {
             const token = localStorage.getItem("token");
@@ -55,14 +72,17 @@ const IncidentsPage = () => {
             });
 
             if (response.ok) {
-                alert("Incident úspěšně aktualizován!");
                 setEditingIncident(null);
-                fetchIncidents(); // reload
+                fetchIncidents();
+                triggerToast();
             } else {
-                console.error("Chyba při ukládání:", await response.text());
+                const text = await response.text();
+                console.error("Chyba při ukládání změn:", text);
+                triggerErrorToast("❌ Nepodařilo se uložit změny.");
             }
         } catch (error) {
             console.error("Chyba:", error);
+            triggerErrorToast("❌ Chyba při komunikaci se serverem.");
         }
     };
 
@@ -138,10 +158,22 @@ const IncidentsPage = () => {
                             onChange={handleChange}
                         />
                         <div className="popup-buttons">
-                            <button onClick={handleSave}>💾 Uložit změny</button>
+                            <button onClick={handleSave} className="save-btn">💾 Uložit změny</button>
                             <button className="cancel-btn" onClick={() => setEditingIncident(null)}>❌ Zrušit</button>
                         </div>
                     </div>
+                </div>
+            )}
+
+            {/* Toast messages */}
+            {showToast && (
+                <div className="toast-success">
+                    ✅ Úprava incidentu byla úspěšná!
+                </div>
+            )}
+            {errorMessage && (
+                <div className="toast-error">
+                    {errorMessage}
                 </div>
             )}
         </div>

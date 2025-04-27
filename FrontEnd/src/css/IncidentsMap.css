@@ -1,0 +1,29 @@
+.map-wrapper {
+    width: 100%;
+    max-width: 900px;
+    height: auto;
+    background: white;
+    padding: 10px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.campus-svg {
+    width: 100%;
+    height: auto;
+}
+
+.sector {
+    fill: #3b82f6;
+    opacity: 0.5;
+    stroke: #1e40af;
+    stroke-width: 2;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.sector:hover {
+    fill: #1e40af;
+    opacity: 0.7;
+    transform: scale(1.02);
+}

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../css/Home.css"; // (zatím necháme, bude minimální)
+import IncidentsMap from "../components/IncidentsMap";
+import "../css/Home.css";
 
 function MapPage() {
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -15,8 +16,13 @@ function MapPage() {
         "Úraz"
     ];
 
+    const handleSectorClick = (sector) => {
+        console.log("Klikl jsi na sektor:", sector);
+        // Sem později můžeme dát přesměrování na detail sektoru
+    };
+
     const toggleDropdown = () => {
-        setDropdownOpen(!dropdownOpen);
+        setDropdownOpen((prev) => !prev);
     };
 
     const selectIncident = (type) => {
@@ -26,28 +32,26 @@ function MapPage() {
 
     return (
         <div className="page-wrapper fade-in">
-            <main className="page-content">
-                <div className="map-placeholder">
-                    <span>Mapa bude doplněna</span>
-                </div>
+            <h1 className="page-title">Mapa Kampusu FEL</h1>
 
-                <div className="map-header">
-                    <div className="dropdown-container">
-                        <button onClick={toggleDropdown} className="dropdown-toggle">
-                            {dropdownOpen ? "▲" : "▼"} Chci nahlásit:
-                        </button>
-                        {dropdownOpen && (
-                            <ul className="dropdown-menu">
-                                {incidentTypes.map((type, index) => (
-                                    <li key={index} onClick={() => selectIncident(type)}>
-                                        {type}
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
-                    </div>
-                </div>
-            </main>
+            <div className="map-container">
+                <IncidentsMap onSectorClick={handleSectorClick} />
+            </div>
+
+            <div className="dropdown-container">
+                <button onClick={toggleDropdown} className="dropdown-toggle">
+                    {dropdownOpen ? "▲" : "▼"} Chci nahlásit:
+                </button>
+                {dropdownOpen && (
+                    <ul className="dropdown-menu">
+                        {incidentTypes.map((type, index) => (
+                            <li key={index} onClick={() => selectIncident(type)}>
+                                {type}
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </div>
         </div>
     );
 }
