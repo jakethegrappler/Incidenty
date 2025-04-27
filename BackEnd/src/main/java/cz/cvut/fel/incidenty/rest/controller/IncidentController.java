@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @RequestMapping("/incident")
 @RestController
 public class IncidentController {
@@ -25,5 +27,15 @@ public class IncidentController {
     ) {
         return ResponseEntity.ok(incidentService.createIncident(incidentDto, photo));
     }
+    @GetMapping("/all")
+    public List<Incident> getAllIncidents() {
+        return incidentService.getAllIncidents();
+    }
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Incident> updateIncident(@PathVariable Long id, @RequestBody IncidentDto updatedIncidentDto) {
+        return ResponseEntity.ok(incidentService.updateIncident(id, updatedIncidentDto));
+    }
+
+
 
 }

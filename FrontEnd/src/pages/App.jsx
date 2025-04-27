@@ -7,6 +7,7 @@ import ReportForm from "./ReportForm.jsx";
 import Registration from "./Registration.jsx";
 import Login from "./Login.jsx";
 import Profile from "./Profile.jsx";
+import IncidentsPage from "./IncidentsPage.jsx";
 function App() {
     return (
         <>
@@ -17,6 +18,7 @@ function App() {
                 <Route path="/registrace" element={<Registration />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/incidents" element={<IncidentsPage />} />
 
                 {/* Zde můžeš přidat další routy */}
             </Routes>

@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/useAuth";
 import "../css/Profile.css";
 
 const Profile = () => {
     const { user } = useAuth();
+    const navigate = useNavigate();
     const [localUser, setLocalUser] = useState(null);
 
     useEffect(() => {
@@ -44,6 +46,10 @@ const Profile = () => {
         );
     }
 
+    const handleDatabaseClick = () => {
+        navigate("/incidents");
+    };
+
     return (
         <div className="page-wrapper fade-in">
             <div className="profile-container">
@@ -75,6 +81,15 @@ const Profile = () => {
                         <span>{localUser.role}</span>
                     </div>
                 </div>
+
+                {/* Tlačítko pro Admina nebo Employee */}
+                {(localUser.role === "ROLE_ADMIN" || localUser.role === "ROLE_EMPLOYEE") && (
+                    <div className="database-button-container">
+                        <button className="database-button" onClick={handleDatabaseClick}>
+                            📚 Správa Incidentů
+                        </button>
+                    </div>
+                )}
             </div>
         </div>
     );

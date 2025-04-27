@@ -1,11 +1,6 @@
 package cz.cvut.fel.incidenty.config.security;
 
 import lombok.experimental.UtilityClass;
-//import org.springframework.http.HttpMethod;
-//import org.springframework.security.web.util.matcher.OrRequestMatcher;
-//import org.springframework.security.web.util.matcher.RequestMatcher;
-//
-//import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
 @UtilityClass
 public class SecurityEndpoints {
@@ -13,18 +8,21 @@ public class SecurityEndpoints {
     public static final String[] PUBLIC_URLS = {
             "/user/register",
             "/user/login",
-            "/art",
-            "incident/create"
+            "/incident/create",  // Opraveno
+            "/incident/all"       // Přidáno!
     };
 
     public static final String[] ADMIN_URLS = {
-            "/admin/**"
+            "/admin/**",
+            "/incidents/**"
     };
 
     public static final String[] EMPLOYEE_URLS = {
             "/employee/**",
-            "/group/create"
+            "/group/create",
+            "/incidents/**"
     };
+
 
 //    final RequestMatcher PUBLIC_URLS = new OrRequestMatcher(
 //            antMatcher(HttpMethod.POST,"/user/register"),

@@ -1,0 +1,170 @@
+/* ZÁKLADNÍ STRUKTURA */
+.page-wrapper {
+    padding: 40px 20px;
+    background: var(--background-light);
+    min-height: 100vh;
+}
+
+.incidents-title {
+    font-size: 32px;
+    color: var(--primary-color-dark);
+    text-align: center;
+    margin-bottom: 30px;
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* TABULKA INCIDENTŮ */
+.table-wrapper {
+    overflow-x: auto;
+    background: var(--input-background);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 20px;
+    animation: fadeIn 1.2s ease-in;
+}
+
+.incidents-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.incidents-table th, .incidents-table td {
+    padding: 14px 12px;
+    text-align: left;
+    font-size: 14px;
+    border-bottom: 1px solid var(--border-color);
+    white-space: nowrap;
+}
+
+.incidents-table th {
+    background: var(--primary-color);
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.incidents-table tr:nth-child(even) {
+    background-color: var(--light-grey);
+}
+
+.incidents-table tr:hover {
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+/* TLAČÍTKA */
+.edit-btn {
+    background-color: var(--success-color);
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.edit-btn:hover {
+    background-color: #218838;
+}
+
+/* POPUP OKNO */
+.popup-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    animation: fadeIn 0.3s ease;
+}
+
+.popup-content {
+    background: white;
+    padding: 30px 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+    animation: scaleUp 0.4s ease;
+}
+
+.popup-content h3 {
+    margin-bottom: 20px;
+    color: var(--primary-color-dark);
+    font-size: 24px;
+}
+
+.popup-content input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 14px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--input-background);
+}
+
+.popup-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+.popup-buttons button {
+    padding: 10px 18px;
+    border-radius: var(--border-radius);
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.popup-buttons button:first-child {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.popup-buttons button:first-child:hover {
+    background-color: var(--primary-color-dark);
+}
+
+.cancel-btn {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.cancel-btn:hover {
+    background-color: #c82333;
+}
+
+/* ANIMACE */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes scaleUp {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* RESPONSIVITA */
+@media (max-width: 600px) {
+    .incidents-title {
+        font-size: 24px;
+    }
+
+    .popup-content {
+        padding: 20px 15px;
+    }
+
+    .popup-content h3 {
+        font-size: 20px;
+    }
+}
