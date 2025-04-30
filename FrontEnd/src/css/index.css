@@ -1,5 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap');
+
+
 /* ========== CSS VARIABLES ========== */
 :root {
+    /* Fonty */
+    --font-main: "IBM Plex Sans", sans-serif;
+
     /* Barvy */
     --primary-color: #3b82f6; /* hlavní modrá */
     --primary-color-dark: #2563eb; /* tmavší modrá na hover */
@@ -23,13 +29,14 @@
 
 /* ========== RESET ========== */
 * {
+    font-family: var(--font-main);
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
 body {
-    font-family: 'Poppins', sans-serif;
+    /*font-family: var(--font-main);*/
     background: var(--background-light);
     color: var(--text-color);
     min-height: 100vh;

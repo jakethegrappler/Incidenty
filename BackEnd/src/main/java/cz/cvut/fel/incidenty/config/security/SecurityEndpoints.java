@@ -8,9 +8,11 @@ public class SecurityEndpoints {
     public static final String[] PUBLIC_URLS = {
             "/user/register",
             "/user/login",
-            "/incident/create",  // Opraveno
-            "/incident/all"       // Přidáno!
+            "/incident/create",
+            "/incident/all",
+            "/incident/stats/**" // ⬅️ přidáno pro veřejný přístup k statistikám
     };
+
 
     public static final String[] ADMIN_URLS = {
             "/admin/**",

@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import IncidentsMap from "../components/IncidentsMap";
+import SectorStatsModal from "../components/SectorStatsModal";
 import "../css/Home.css";
 
 function MapPage() {
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [selectedSector, setSelectedSector] = useState(null);
+    const [sectorStats, setSectorStats] = useState(null);
     const navigate = useNavigate();
 
     const incidentTypes = [
@@ -16,18 +19,31 @@ function MapPage() {
         "Úraz"
     ];
 
-    const handleSectorClick = (sector) => {
-        console.log("Klikl jsi na sektor:", sector);
-        // Sem později můžeme dát přesměrování na detail sektoru
-    };
-
     const toggleDropdown = () => {
-        setDropdownOpen((prev) => !prev);
+        setDropdownOpen(prev => !prev);
     };
 
     const selectIncident = (type) => {
         setDropdownOpen(false);
         navigate("/report", { state: { selectedType: type } });
+    };
+
+    const handleSectorClick = async (sector) => {
+        try {
+            const response = await fetch(`http://localhost:8080/incident/stats/${sector}`);
+            if (!response.ok) throw new Error("Chyba při načítání statistik.");
+            const data = await response.json();
+            setSelectedSector(sector);
+            setSectorStats(data);
+        } catch (err) {
+            console.error(err);
+            alert("Nepodařilo se načíst statistiky sektoru.");
+        }
+    };
+
+    const closeModal = () => {
+        setSelectedSector(null);
+        setSectorStats(null);
     };
 
     return (
@@ -52,6 +68,15 @@ function MapPage() {
                     </ul>
                 )}
             </div>
+
+            {/* 📊 Modální okno se statistikami */}
+            {selectedSector && sectorStats && (
+                <SectorStatsModal
+                    sector={selectedSector}
+                    stats={sectorStats}
+                    onClose={closeModal}
+                />
+            )}
         </div>
     );
 }

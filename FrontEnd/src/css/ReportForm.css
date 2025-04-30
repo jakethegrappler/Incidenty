@@ -71,3 +71,24 @@
         padding: 1.5rem;
     }
 }
+.map-container {
+    width: 100%;
+    max-width: 1000px;
+    margin-bottom: 30px;
+}
+
+.selected-sector-info {
+    margin-top: 10px;
+    font-size: 16px;
+    color: var(--primary-color);
+    text-align: center;
+    font-weight: bold;
+}
+
+.error-message {
+    color: var(--danger-color);
+    font-weight: bold;
+    margin-top: 10px;
+    text-align: center;
+}
+

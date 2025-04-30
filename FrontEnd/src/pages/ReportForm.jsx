@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../auth/useAuth";
 import { useLocation } from "react-router-dom";
+import IncidentsMap from "../components/IncidentsMap";
 import "../css/ReportForm.css";
 
 function ReportForm() {
     const { user } = useAuth();
     const location = useLocation();
+
     const selectedType = location.state?.selectedType || "NEZNÁMÝ";
 
     const [form, setForm] = useState({
@@ -19,6 +21,8 @@ function ReportForm() {
     });
 
     const [successMessage, setSuccessMessage] = useState("");
+    const [formError, setFormError] = useState("");
+
 
     useEffect(() => {
         if (user) {
@@ -40,6 +44,13 @@ function ReportForm() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        // kontrola lokace
+        if (!form.location) {
+            setFormError("Musíte vybrat lokaci na mapě.");
+            return;
+        }
+        setFormError(""); // vyčistí chybu při úspěchu
+
 
         const formData = new FormData();
         const incidentDto = {
@@ -84,7 +95,6 @@ function ReportForm() {
                 photo: null,
             });
 
-            // Success zpráva zmizí po pár sekundách
             setTimeout(() => setSuccessMessage(""), 5000);
 
         } catch (err) {
@@ -98,9 +108,24 @@ function ReportForm() {
             <div className="form-container">
                 <h1 className="form-title">Nahlásit: {form.type.toUpperCase()}</h1>
 
-                <div className="map-placeholder">
-                    <span>Mapa bude doplněna</span>
+                {/* 🗺️ Interaktivní mapa pro výběr lokace */}
+                <div className="map-container">
+                    <IncidentsMap onSectorClick={(sector) => {
+                        setForm((prev) => ({...prev, location: sector}));
+                        setFormError("");
+                    }
+                    } />
+                    <p className="selected-sector-info">
+                        Vybraná lokace: <strong>{form.location || "Žádná"}</strong>
+                        {/*{setFormError("")}*/}
+                    </p>
                 </div>
+                {formError && (
+                    <div className="error-message">
+                        {formError}
+                    </div>
+                )}
+
 
                 {successMessage && (
                     <div className="success-message animate-success">
@@ -116,14 +141,16 @@ function ReportForm() {
                         onChange={handleChange}
                         required
                     />
+
+                    {/* Lokace je vybírána přes mapu – pole skryto */}
                     <input
                         type="text"
                         name="location"
-                        placeholder="Lokace incidentu"
                         value={form.location}
-                        onChange={handleChange}
-                        required
+                        readOnly
+                        hidden
                     />
+
                     <input
                         type="text"
                         name="customPhoneNumber"
@@ -132,6 +159,7 @@ function ReportForm() {
                         placeholder="Telefonní číslo"
                         required
                     />
+
                     <textarea
                         name="description"
                         value={form.description}
@@ -139,12 +167,14 @@ function ReportForm() {
                         placeholder="Popis události"
                         required
                     />
+
                     <input
                         type="file"
                         name="photo"
                         accept="image/*"
                         onChange={handleChange}
                     />
+
                     <button type="submit">Nahlásit incident</button>
                 </form>
             </div>

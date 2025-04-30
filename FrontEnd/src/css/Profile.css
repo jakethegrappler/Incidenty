@@ -9,6 +9,8 @@
     flex-direction: column;
     gap: 1.5rem;
     text-align: center;
+    font-family: var(--font-main);
+
 }
 
 .profile-title {
@@ -41,7 +43,7 @@
 }
 
 .profile-label {
-    font-weight: bold;
+    /*font-weight: bold;*/
     color: var(--secondary-color);
     margin-bottom: 4px;
     display: block;
