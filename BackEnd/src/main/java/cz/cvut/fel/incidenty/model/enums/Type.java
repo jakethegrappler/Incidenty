@@ -12,7 +12,7 @@ public enum Type {
     RUSENI_NOCNIHO_KLIDU,
     OBTEZOVANI,
     VYTRZNOST,
-    EPILEPTICKY_ZACHVAT,
+    EPILEPTICKY_ZACHVAT, //smazat
     KOLAPS,
     URAZ,
     NEHODA,
