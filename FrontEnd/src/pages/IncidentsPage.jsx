@@ -37,6 +37,7 @@ const IncidentsPage = () => {
             detail: incident.detail || "",
             solution: incident.solution || "",
             note: incident.note || "",
+            issueDate :  incident.issueDate || ""
         });
     };
 
@@ -136,21 +137,39 @@ const IncidentsPage = () => {
                 <div className="popup-backdrop">
                     <div className="popup-content">
                         <h3>Upravit Incident #{editingIncident.id}</h3>
+                        <label htmlFor="issueDate">Datum vyřešení incidentu</label>
                         <input
+                            id={"issueDate"}
+                            type="datetime-local"
+                            name="datetime"
+                            value={form.issueDate}
+                            onChange={handleChange}
+
+                        />
+                        <label htmlFor="detail">Detail</label>
+
+                        <input
+                            id="detail"
                             type="text"
                             name="detail"
                             placeholder="Detail"
                             value={form.detail}
                             onChange={handleChange}
                         />
+                        <label htmlFor="solution">Řešení</label>
+
                         <input
+                            id="solution"
                             type="text"
                             name="solution"
                             placeholder="Řešení"
                             value={form.solution}
                             onChange={handleChange}
                         />
+                        <label htmlFor="note">Poznámka</label>
+
                         <input
+                            id="note"
                             type="text"
                             name="note"
                             placeholder="Poznámka"

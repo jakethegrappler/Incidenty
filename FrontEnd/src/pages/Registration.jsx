@@ -43,8 +43,8 @@ const Registration = () => {
         }
         if (!formData.password) {
             errors.password = "Heslo je povinné.";
-        } else if (formData.password.length < 6) {
-            errors.password = "Heslo musí mít alespoň 6 znaků.";
+        } else if (formData.password.length < 4) {
+            errors.password = "Heslo musí mít alespoň 4 znaky.";
         }
         if (formData.confirmPassword !== formData.password) {
             errors.confirmPassword = "Hesla se neshodují.";

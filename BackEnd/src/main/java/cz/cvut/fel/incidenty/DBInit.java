@@ -1,9 +1,12 @@
 package cz.cvut.fel.incidenty;
 
+import cz.cvut.fel.incidenty.model.Admin;
 import cz.cvut.fel.incidenty.model.Incident;
 import cz.cvut.fel.incidenty.repository.IncidentRepository;
+import cz.cvut.fel.incidenty.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -11,11 +14,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+import static cz.cvut.fel.incidenty.model.enums.Role.ROLE_ADMIN;
+
 @Component
 @RequiredArgsConstructor
 public class DBInit {
 
     private final IncidentRepository incidentRepository;
+
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     private final List<String> sectors = Arrays.asList(
             "A3", "A4", "B2", "B3", "C2", "C3", "C4", "D2", "D3",
@@ -47,6 +55,47 @@ public class DBInit {
                 incidentRepository.save(incident);
             }
         }
+
+
+        Admin admin = new Admin();
+        admin.setUsername("nedbajak");
+        admin.setRole(ROLE_ADMIN);
+        admin.setPassword(passwordEncoder.encode("heslo"));
+        admin.setPhoneNumber("776281583");
+        admin.setEmail("nedbal.jakub@gmail.com");
+        admin.setFirstName("Jakub");
+        admin.setLastName("Nedbal");
+        userRepository.save(admin);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
     private <T> T getRandom(List<T> list) {
