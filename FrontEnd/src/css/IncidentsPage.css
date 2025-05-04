@@ -16,22 +16,29 @@
 /* TABULKA INCIDENTŮ */
 .table-wrapper {
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
     background: var(--input-background);
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     padding: 20px;
     animation: fadeIn 1.2s ease-in;
+
+    width: 100%;
+    /*display: flex;*/
+    /*justify-content: center;*/
 }
 
 .incidents-table {
-    width: 100%;
+    width: max-content;
+    min-width: 1000px;
     border-collapse: collapse;
+    font-size: 14px;
 }
 
-.incidents-table th, .incidents-table td {
+.incidents-table th,
+.incidents-table td {
     padding: 14px 12px;
     text-align: left;
-    font-size: 14px;
     border-bottom: 1px solid var(--border-color);
     white-space: nowrap;
 }
@@ -108,13 +115,11 @@
     font-size: 22px;
 }
 
-/* Ikona pro název */
 .popup-content h3::before {
     content: "🛠️";
     font-size: 22px;
 }
 
-/* Formulářové elementy */
 .popup-content label {
     font-weight: bold;
     font-size: 14px;
@@ -141,13 +146,11 @@
     transform: scale(1.1);
 }
 
-/* Checkbox s textem */
 .popup-content label[for="verified"] {
     display: flex;
     align-items: center;
 }
 
-/* Tlačítka popupu */
 .popup-buttons {
     display: flex;
     justify-content: center;
@@ -299,25 +302,8 @@
     outline: none;
 }
 
-
+/* RESPONSIVITA */
 @media (max-width: 768px) {
-    .table-wrapper {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-
-    .incidents-table {
-        min-width: 900px;
-        font-size: 13px;
-    }
-
-    .incidents-table th,
-    .incidents-table td {
-        padding: 10px 8px;
-        white-space: nowrap;
-        word-break: keep-all;
-    }
-
     .popup-content {
         width: 95%;
         max-width: none;

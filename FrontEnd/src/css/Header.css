@@ -5,7 +5,11 @@
     background-color: #f1f1f1;
     padding: 10px 20px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    position: relative;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
 }
 
 /* Logo */
@@ -15,6 +19,7 @@
     width: 55px;
     height: 55px;
     border-radius: 25%;
+    cursor: pointer;
 }
 
 /* Dropdown menu */
@@ -82,7 +87,6 @@
 .logout-btn:hover {
     background-color: #f0f0f0;
 }
-
 
 /* 📱 Responzivní úpravy pro mobily */
 @media (max-width: 768px) {
