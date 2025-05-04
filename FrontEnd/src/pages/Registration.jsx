@@ -15,8 +15,10 @@ const Registration = () => {
         role: 'ROLE_STUDENT',
     });
 
+
     const [formErrors, setFormErrors] = useState({});
     const [isSubmitted, setIsSubmitted] = useState(false);
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;

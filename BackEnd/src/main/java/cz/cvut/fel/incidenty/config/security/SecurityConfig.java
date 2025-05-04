@@ -1,4 +1,3 @@
-
 package cz.cvut.fel.incidenty.config.security;
 
 import lombok.RequiredArgsConstructor;
@@ -41,11 +40,11 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/uploads/**").permitAll() // ⬅️ Tohle dovolí fotky
                         .requestMatchers(SecurityEndpoints.PUBLIC_URLS).permitAll()
                         .requestMatchers(SecurityEndpoints.ADMIN_URLS).hasAuthority("ROLE_ADMIN")
                         .requestMatchers(SecurityEndpoints.EMPLOYEE_URLS).hasAnyAuthority("ROLE_ADMIN", "ROLE_EMPLOYEE")
-                        .requestMatchers("/incident/create", "/incident/all").permitAll()
-
+//                        .requestMatchers("/incident/create", "/incident/all").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)

@@ -1,13 +1,64 @@
 import PropTypes from "prop-types";
 import "../css/IncidentsMap.css";
 
-function IncidentsMap({ onSectorClick }) {
+const typeColors = {
+    "Krádež": "#e60000",       // výrazná červená
+    "Napadení": "#ff8000",     // sytá oranžová
+    "Požár": "#ffd000",        // zářivě žlutá
+    "Úraz": "#00c49a",         // tyrkysově zelená
+    "Vandalismus": "#cc00cc",  // ostrá purpurová
+    "Havárie": "#000000"       // černá (ultimátní kontrast)
+};
+
+function isToday(dateString) {
+    if (!dateString) return false;
+    const today = new Date();
+    const date = new Date(dateString);
+    return (
+        date.getFullYear() === today.getFullYear() &&
+        date.getMonth() === today.getMonth() &&
+        date.getDate() === today.getDate()
+    );
+}
+
+
+
+function getColorForType(type) {
+    return typeColors[type] || "#6b7280"; // šedá jako výchozí
+}
+
+function IncidentsMap({ onMapClick, onSectorClick, incidents = [] }) {
+    const handleClick = (e) => {
+        if (!onMapClick) return;
+
+        const svg = e.currentTarget;
+        const point = svg.createSVGPoint();
+        point.x = e.clientX;
+        point.y = e.clientY;
+
+        // Transformace do koordinát ve viewBoxu
+        const ctm = svg.getScreenCTM().inverse();
+        const svgPoint = point.matrixTransform(ctm);
+
+        const x = Math.round(svgPoint.x);
+        const y = Math.round(svgPoint.y);
+
+        let sector = "NEZNÁMÝ";
+        if (e.target.tagName === "path" && e.target.dataset.sector) {
+            sector = e.target.dataset.sector;
+        }
+
+        onMapClick(x, y, sector);
+    };
+
+
     return (
         <div className="map-wrapper">
             <svg
                 viewBox="0 0 1000 700"
                 className="campus-svg"
                 xmlns="http://www.w3.org/2000/svg"
+                onClick={handleClick}
             >
                 {/* 🖼️ Podkladová mapa */}
                 <image
@@ -16,124 +67,47 @@ function IncidentsMap({ onSectorClick }) {
                     y="0"
                     width="1000"
                     height="700"
-                    // preserveAspectRatio="xMidYMid slice"
                 />
 
                 {/* 🔵 Polygony sektorů */}
+                <path d="M 417 339 L 417 375 L 477 375 L 477 339 Z" data-sector="A3" className="sector" onClick={() => onSectorClick?.("A3")} />
+                <path d="M 417 463 L 417 499 L 477 499 L 477 463 Z" data-sector="A4" className="sector" onClick={() => onSectorClick?.("A4")} />
+                <path d="M 617 317 L 499 317 L 499 283 L 617 284 Z" data-sector="B2" className="sector" onClick={() => onSectorClick?.("B2")} />
+                <path d="M 612 440 L 499 440 L 499 407 L 612 407 Z" data-sector="B3" className="sector" onClick={() => onSectorClick?.("B3")} />
+                <path d="M 477 196 L 477 283 L 520 283 L 520 196 Z" data-sector="C2" className="sector" onClick={() => onSectorClick?.("C2")} />
+                <path d="M 477 317 L 477 407 L 520 407 L 520 317 Z" data-sector="C3" className="sector" onClick={() => onSectorClick?.("C3")} />
+                <path d="M 520 499 L 520 440 L 476 440 L 477 499 Z" data-sector="C4" className="sector" onClick={() => onSectorClick?.("C4")} />
+                <path d="M 454 283 L 454 317 L 499 317 L 499 284 Z" data-sector="D2" className="sector" onClick={() => onSectorClick?.("D2")} />
+                <path d="M 454 407 L 454 440 L 499 440 L 499 407 Z" data-sector="D3" className="sector" onClick={() => onSectorClick?.("D3")} />
+                <path d="M 620 402 L 719 300 L 738 317 L 638 420 Z" data-sector="E1" className="sector" onClick={() => onSectorClick?.("E1")} />
+                <path d="M 633 565 L 593 525 L 647 469 L 616 439 L 628 429 L 669 468 L 658 479 L 688 509 Z" data-sector="F1" className="sector" onClick={() => onSectorClick?.("F1")} />
+                <path d="M 695 503 L 676 485 L 783 378 L 801 395 Z" data-sector="G1" className="sector" onClick={() => onSectorClick?.("G1")} />
+                <path d="M 748 327 L 647 429 L 681 463 L 782 361 Z" data-sector="H1" className="sector" onClick={() => onSectorClick?.("H1")} />
+                <path d="M 712 525 L 802 435 L 845 482 L 757 571 Z" data-sector="B1A" className="sector" onClick={() => onSectorClick?.("B1A")} />
+                <path d="M 893 344 L 802 435 L 845 482 L 937 389 Z" data-sector="B3A" className="sector" onClick={() => onSectorClick?.("B3A")} />
 
-                {/* Sektor A3 */}
-                <path
-                    d="M 417 339 L 417 375 L 477 375 L 477 339 Z"
-                    className="sector"
-                    onClick={() => onSectorClick('A3')}
-                />
+                {/* 🔴 Incident tečky */}
+                {incidents.map((incident, i) => (
+                    <circle
+                        key={i}
+                        cx={incident.x}
+                        cy={incident.y}
+                        r="5"
+                        fill={getColorForType(incident.type)}
+                        className={`incident-dot ${isToday(incident.date) ? "pulsing" : ""}`}
+                        opacity="0.9"
+                    />
+                ))}
 
-                {/* Sektor A4 */}
-                <path
-                    d="M 417 463 L 417 499 L 477 499 L 477 463 Z"
-                    className="sector"
-                    onClick={() => onSectorClick('A4')}
-                />
-
-                {/* Sektor B2 */}
-                <path
-                    d="M 617 317 L 499 317 L 499 283 L 617 284 Z"
-                    className="sector"
-                    onClick={() => onSectorClick('B2')}
-                />
-
-                {/* Sektor B3 */}
-                <path
-                    d="M 612 440 L 499 440 L 499 407 L 612 407 Z"
-                    className="sector"
-                    onClick={() => onSectorClick('B3')}
-                />
-
-                {/* Sektor C2 */}
-                <path
-                    d="M 477 196 L 477 283 L 520 283 L 520 196 Z"
-                    className="sector"
-                    onClick={() => onSectorClick('C2')}
-                />
-
-                {/* Sektor C3 */}
-                <path
-                    d="M 477 317 L 477 407 L 520 407 L 520 317 Z"
-                    className="sector"
-                    onClick={() => onSectorClick('C3')}
-                />
-
-                {/* Sektor C4 */}
-                <path
-                    d="M 520 499 L 520 440 L 476 440 L 477 499 Z"
-                    className="sector"
-                    onClick={() => onSectorClick('C4')}
-                />
-
-                {/* Sektor D2 */}
-                <path
-                    d="M 454 283 L 454 317 L 499 317 L 499 284 Z"
-                    className="sector"
-                    onClick={() => onSectorClick('D2')}
-                />
-
-                {/* Sektor D3 */}
-                <path
-                    d="M 454 407 L 454 440 L 499 440 L 499 407 Z"
-                    className="sector"
-                    onClick={() => onSectorClick('D3')}
-                />
-
-                {/* Sektor E1 */}
-                <path
-                    d="M 620 402 L 719 300 L 738 317 L 638 420 Z"
-                    className="sector"
-                    onClick={() => onSectorClick('E1')}
-                />
-
-                {/* Sektor F1 */}
-                <path
-                    d="M 633 565 L 593 525 L 647 469 L 616 439 L 628 429 L 669 468 L 658 479 L 688 509 Z"
-                    className="sector"
-                    onClick={() => onSectorClick('F1')}
-                />
-
-                {/* Sektor G1 */}
-                <path
-                    d="M 695 503 L 676 485 L 783 378 L 801 395 Z"
-                    className="sector"
-                    onClick={() => onSectorClick('G1')}
-                />
-
-                {/* Sektor H1 */}
-                <path
-                    d="M 748 327 L 647 429 L 681 463 L 782 361 Z"
-                    className="sector"
-                    onClick={() => onSectorClick('H1')}
-                />
-
-                {/* Sektor B1A */}
-                <path
-                    d="M 712 525 L 802 435 L 845 482 L 757 571 Z"
-                    className="sector"
-                    onClick={() => onSectorClick('B1A')}
-                />
-
-                {/* Sektor B3A */}
-                <path
-                    d="M 893 344 L 802 435 L 845 482 L 937 389 Z"
-                    className="sector"
-                    onClick={() => onSectorClick('B3A')}
-                />
             </svg>
         </div>
     );
 }
-    {/*Path */}
-// M 477 196 L 477 283 L 520 283 L 520 196 Z M 454 283 L 454 317 L 499 317 L 499 284 Z M 617 317 L 499 317 L 499 283 L 617 284 Z M 417 339 L 417 375 L 477 375 L 477 339 Z M 477 317 L 477 407 L 520 407 L 520 317 Z M 454 407 L 454 440 L 499 440 L 499 407 Z M 612 440 L 499 440 L 499 407 L 612 407 Z M 417 463 L 417 499 L 477 499 L 477 463 Z M 520 499 L 520 440 L 476 440 L 477 499 Z M 620 402 L 719 300 L 738 317 L 638 420 Z M 748 327 L 647 429 L 681 463 L 782 361 Z M 695 503 L 676 485 L 783 378 L 801 395 Z M 712 525 L 802 435 L 845 482 L 757 571 Z M 893 344 L 802 435 L 845 482 L 937 389 Z M 633 565 L 593 525 L 647 469 L 616 439 L 628 429 L 669 468 L 658 479 L 688 509 Z
 
 IncidentsMap.propTypes = {
-    onSectorClick: PropTypes.func.isRequired,
+    onMapClick: PropTypes.func,
+    onSectorClick: PropTypes.func,
+    incidents: PropTypes.array
 };
 
 export default IncidentsMap;

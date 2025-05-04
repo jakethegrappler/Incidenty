@@ -28,8 +28,6 @@ public class Incident {
     @Column(nullable = false)
     private String position;
 
-
-
     @Column(nullable = false)
     private String izs;
 
@@ -49,4 +47,11 @@ public class Incident {
 
     private String customPhoneNumber;
 
+    // 🆕 Souřadnice kliknutí na mapě
+    private Integer x;
+    private Integer y;
+
+    // Nové pole pro označení ověření incidentu
+    @Column(nullable = false)
+    private boolean verified = false;
 }

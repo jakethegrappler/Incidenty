@@ -32,3 +32,37 @@
     fill: rgba(41, 128, 185, 0.5);
     stroke: #1a5276;
 }
+
+/* Styl pro incident body (SVG <circle>) */
+.incident-dot {
+    stroke: white;
+    stroke-width: 1.5;
+    transition: transform 0.2s ease;
+    cursor: pointer;
+}
+
+/* Hover efekt – zvětší bod trochu */
+.incident-dot:hover {
+    transform: scale(1.5);
+}
+
+/* ✨ (Volitelné) animace: pulzující efekt */
+@keyframes pulse {
+    0% {
+        r: 5;
+        opacity: 0.8;
+    }
+    50% {
+        r: 8;
+        opacity: 0.5;
+    }
+    100% {
+        r: 5;
+        opacity: 0.8;
+    }
+}
+
+.incident-dot.pulsing {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+

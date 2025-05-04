@@ -13,6 +13,8 @@ function ReportForm() {
     const [form, setForm] = useState({
         datetime: "",
         location: "",
+        x: null,
+        y: null,
         customPhoneNumber: "",
         description: "",
         reporter: "",
@@ -22,7 +24,6 @@ function ReportForm() {
 
     const [successMessage, setSuccessMessage] = useState("");
     const [formError, setFormError] = useState("");
-
 
     useEffect(() => {
         if (user) {
@@ -34,23 +35,39 @@ function ReportForm() {
         }
     }, [user]);
 
+    const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+
     const handleChange = (e) => {
         const { name, value, files } = e.target;
+
+        if (name === "photo" && files && files[0]) {
+            const file = files[0];
+            if (file.size > MAX_FILE_SIZE) {
+                setFormError("Fotka je příliš velká. Maximální velikost je 5 MB.");
+                return;
+            }
+        }
+
         setForm((prev) => ({
             ...prev,
             [name]: files ? files[0] : value,
         }));
     };
 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // kontrola lokace
+
         if (!form.location) {
             setFormError("Musíte vybrat lokaci na mapě.");
             return;
         }
-        setFormError(""); // vyčistí chybu při úspěchu
+        if (form.photo && form.photo.size > MAX_FILE_SIZE) {
+            setFormError("Fotka přesahuje povolenou velikost.");
+            return;
+        }
 
+        setFormError("");
 
         const formData = new FormData();
         const incidentDto = {
@@ -64,6 +81,8 @@ function ReportForm() {
             note: null,
             issueDate: null,
             customPhoneNumber: user?.phoneNumber || form.customPhoneNumber,
+            x: form.x,
+            y: form.y
         };
 
         formData.append("incident", new Blob([JSON.stringify(incidentDto)], { type: "application/json" }));
@@ -88,6 +107,8 @@ function ReportForm() {
             setForm({
                 datetime: "",
                 location: "",
+                x: null,
+                y: null,
                 customPhoneNumber: "",
                 description: "",
                 reporter: user?.email || "",
@@ -108,24 +129,28 @@ function ReportForm() {
             <div className="form-container">
                 <h1 className="form-title">Nahlásit: {form.type.toUpperCase()}</h1>
 
-                {/* 🗺️ Interaktivní mapa pro výběr lokace */}
                 <div className="map-container">
-                    <IncidentsMap onSectorClick={(sector) => {
-                        setForm((prev) => ({...prev, location: sector}));
-                        setFormError("");
-                    }
-                    } />
+                    <IncidentsMap
+                        onMapClick={(x, y, sector) => {
+                            setForm((prev) => ({
+                                ...prev,
+                                location: sector,
+                                x: Math.round(x),
+                                y: Math.round(y)
+                            }));
+                            setFormError("");
+                        }}
+                    />
                     <p className="selected-sector-info">
                         Vybraná lokace: <strong>{form.location || "Žádná"}</strong>
-                        {/*{setFormError("")}*/}
                     </p>
                 </div>
+
                 {formError && (
                     <div className="error-message">
                         {formError}
                     </div>
                 )}
-
 
                 {successMessage && (
                     <div className="success-message animate-success">
@@ -142,7 +167,6 @@ function ReportForm() {
                         required
                     />
 
-                    {/* Lokace je vybírána přes mapu – pole skryto */}
                     <input
                         type="text"
                         name="location"
