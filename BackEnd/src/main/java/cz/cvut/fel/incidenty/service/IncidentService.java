@@ -3,6 +3,7 @@ package cz.cvut.fel.incidenty.service;
 import cz.cvut.fel.incidenty.dto.IncidentDto;
 import cz.cvut.fel.incidenty.mapper.IncidentMapper;
 import cz.cvut.fel.incidenty.model.Incident;
+import cz.cvut.fel.incidenty.model.User;
 import cz.cvut.fel.incidenty.repository.IncidentRepository;
 import cz.cvut.fel.incidenty.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class IncidentService {
     private final UserRepository userRepository;
 
 
-    public IncidentService(IncidentRepository incidentRepository, IncidentMapper incidentMapper) {
+    public IncidentService(IncidentRepository incidentRepository, IncidentMapper incidentMapper, UserRepository userRepository) {
         this.incidentRepository = incidentRepository;
         this.incidentMapper = incidentMapper;
         this.userRepository = userRepository;
@@ -71,6 +72,15 @@ public class IncidentService {
                 throw new RuntimeException("Chyba při ukládání souboru", e);
             }
         }
+        List<User> recipients = userRepository.findAll().stream()
+                .filter(user -> user.getRole().toString().equals("ROLE_ADMIN") || user.getRole().toString().equals("ROLE_EMPLOYEE"))
+                .toList();
+
+        for (User user : recipients) {
+            user.getNotifications().add(savedIncident.getId());
+        }
+
+        userRepository.saveAll(recipients);
 
         return savedIncident;
     }

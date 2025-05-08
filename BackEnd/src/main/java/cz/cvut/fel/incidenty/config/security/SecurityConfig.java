@@ -39,13 +39,15 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/uploads/**").permitAll() // ⬅️ Tohle dovolí fotky
-                        .requestMatchers(SecurityEndpoints.PUBLIC_URLS).permitAll()
-                        .requestMatchers(SecurityEndpoints.ADMIN_URLS).hasAuthority("ROLE_ADMIN")
-                        .requestMatchers(SecurityEndpoints.EMPLOYEE_URLS).hasAnyAuthority("ROLE_ADMIN", "ROLE_EMPLOYEE")
+                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                                .requestMatchers("/uploads/**").permitAll() // ⬅️ Tohle dovolí fotky
+                                .requestMatchers("/user/notifications/remove/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_EMPLOYEE")
+
+                                .requestMatchers(SecurityEndpoints.PUBLIC_URLS).permitAll()
+                                .requestMatchers(SecurityEndpoints.ADMIN_URLS).hasAuthority("ROLE_ADMIN")
+                                .requestMatchers(SecurityEndpoints.EMPLOYEE_URLS).hasAnyAuthority("ROLE_ADMIN", "ROLE_EMPLOYEE")
 //                        .requestMatchers("/incident/create", "/incident/all").permitAll()
-                        .anyRequest().authenticated()
+                                .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
