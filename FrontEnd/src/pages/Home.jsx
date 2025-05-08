@@ -11,9 +11,12 @@ function MapPage() {
     const [incidentPoints, setIncidentPoints] = useState([]);
 
     const [selectedDays, setSelectedDays] = useState(0); // 0 = bez omezení
+
     const [selectedTypes, setSelectedTypes] = useState([]);
 
     const navigate = useNavigate();
+
+
 
     const incidentTypes = [
         "Napadení",
@@ -24,6 +27,8 @@ function MapPage() {
         "Úraz"
     ];
 
+
+
     useEffect(() => {
         fetch("http://localhost:8080/incident/all")
             .then(res => res.json())
@@ -31,14 +36,19 @@ function MapPage() {
             .catch(err => console.error("Chyba načítání incidentů:", err));
     }, []);
 
+
+
     const toggleDropdown = () => {
         setDropdownOpen(prev => !prev);
     };
+
+
 
     const selectIncident = (type) => {
         setDropdownOpen(false);
         navigate("/report", { state: { selectedType: type } });
     };
+
 
     const handleSectorClick = async (sector) => {
         try {

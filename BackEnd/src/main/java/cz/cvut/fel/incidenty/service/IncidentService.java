@@ -4,6 +4,7 @@ import cz.cvut.fel.incidenty.dto.IncidentDto;
 import cz.cvut.fel.incidenty.mapper.IncidentMapper;
 import cz.cvut.fel.incidenty.model.Incident;
 import cz.cvut.fel.incidenty.repository.IncidentRepository;
+import cz.cvut.fel.incidenty.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,10 +20,14 @@ public class IncidentService {
 
     private final IncidentRepository incidentRepository;
     private final IncidentMapper incidentMapper;
+    private final UserRepository userRepository;
+
 
     public IncidentService(IncidentRepository incidentRepository, IncidentMapper incidentMapper) {
         this.incidentRepository = incidentRepository;
         this.incidentMapper = incidentMapper;
+        this.userRepository = userRepository;
+
     }
 
     public Incident updateIncident(Long id, IncidentDto updatedIncidentDto) {

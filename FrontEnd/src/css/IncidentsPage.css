@@ -93,7 +93,8 @@
 
 .popup-content {
     background: white;
-    padding: 30px 25px;
+    padding: 50px 40px;
+    padding-top: 5rem;
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     width: 100%;
@@ -282,6 +283,7 @@
 
 /* SEARCHBAR */
 .search-bar {
+    padding-top: 3rem;
     margin-bottom: 16px;
     display: flex;
     justify-content: center;

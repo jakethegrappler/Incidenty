@@ -142,7 +142,7 @@ function ReportForm() {
                         }}
                     />
                     <p className="selected-sector-info">
-                        Vybraná lokace: <strong>{form.location || "Žádná"}</strong>
+                        Vybraná lokace: <strong>{form.location || ""}</strong>
                     </p>
                 </div>
 
