@@ -7,7 +7,7 @@ import "../css/ReportForm.css";
 function ReportForm() {
     const { user } = useAuth();
     const location = useLocation();
-
+    const now = new Date();
     const selectedType = location.state?.selectedType || "NEZNÁMÝ";
 
     const [form, setForm] = useState({
@@ -39,6 +39,7 @@ function ReportForm() {
 
     const handleChange = (e) => {
         const { name, value, files } = e.target;
+        console.log(now);
 
         if (name === "photo" && files && files[0]) {
             const file = files[0];
@@ -48,16 +49,29 @@ function ReportForm() {
             }
         }
 
+        let newValue = value;
+
+        if (name === "customPhoneNumber") {
+            // 🔢 Odstranění všech nečíselných znaků
+            const digits = value.replace(/\D/g, "").slice(0, 9);
+
+            // 💄 Formátování do trojic (777 123 456)
+            const part1 = digits.slice(0, 3);
+            const part2 = digits.slice(3, 6);
+            const part3 = digits.slice(6, 9);
+            newValue = [part1, part2, part3].filter(Boolean).join("-");
+        }
+
         setForm((prev) => ({
             ...prev,
-            [name]: files ? files[0] : value,
+            [name]: files ? files[0] : newValue,
         }));
     };
 
 
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         if (!form.location) {
             setFormError("Musíte vybrat lokaci na mapě.");
             return;
@@ -66,6 +80,18 @@ function ReportForm() {
             setFormError("Fotka přesahuje povolenou velikost.");
             return;
         }
+
+
+        if (form.datetime > now) {
+            setFormError("Datum incidentu nemůže být v budoucnosti.");
+            return;
+
+        }
+        if (form.description == null){
+            setFormError("Popište co se stalo.");
+            return;
+        }
+        const cleanedPhone = form.customPhoneNumber.replace(/\D/g, "");
 
         setFormError("");
 
@@ -80,7 +106,7 @@ function ReportForm() {
             solution: null,
             note: null,
             issueDate: null,
-            customPhoneNumber: user?.phoneNumber || form.customPhoneNumber,
+            customPhoneNumber: user?.phoneNumber || cleanedPhone,
             x: form.x,
             y: form.y
         };
@@ -164,6 +190,7 @@ function ReportForm() {
                         name="datetime"
                         value={form.datetime}
                         onChange={handleChange}
+                        max={now}
                         required
                     />
 
@@ -180,7 +207,7 @@ function ReportForm() {
                         name="customPhoneNumber"
                         value={form.customPhoneNumber}
                         onChange={handleChange}
-                        placeholder="Telefonní číslo"
+                        placeholder="Telefonní číslo(XXX-YYY-ZZZ)"
                         required
                     />
 
