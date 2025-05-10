@@ -7,6 +7,16 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 function SectorStatsModal({ sector, stats, onClose }) {
     const total = Object.values(stats).reduce((sum, count) => sum + count, 0);
+    const typeColors = {
+        "Krádež": "#e63946",
+        "Napadení": "#f77f00",
+        "Požár": "#fcbf49",
+        "Úraz": "#00b4d8",
+        "Vandalismus": "#5e60ce",
+        "Havárie": "#6c757d"
+    };
+
+
 
     // Najdi nejčastější typ
     const topTypeEntry = Object.entries(stats).reduce((a, b) => (a[1] > b[1] ? a : b));
@@ -18,17 +28,11 @@ function SectorStatsModal({ sector, stats, onClose }) {
         datasets: [
             {
                 data: Object.values(stats),
-                backgroundColor: [
-                    "#3b82f6",
-                    "#10b981",
-                    "#f59e0b",
-                    "#ef4444",
-                    "#6366f1",
-                    "#14b8a6",
-                ],
+                backgroundColor: Object.keys(stats).map(type => typeColors[type] || "#ccc"),
             },
         ],
     };
+
 
     return (
         <div className="modal-backdrop">

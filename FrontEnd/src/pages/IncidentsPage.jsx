@@ -108,8 +108,8 @@ const IncidentsPage = () => {
         return (
             incident.type?.toLowerCase().includes(query) ||
             incident.position?.toLowerCase().includes(query) ||
-            incident.reporter?.toLowerCase().includes(query) //||
-            // incident.detail?.toLowerCase().includes(query)
+            incident.reporter?.toLowerCase().includes(query) ||
+            incident.detail?.toLowerCase().includes(query)
         );
     });
 

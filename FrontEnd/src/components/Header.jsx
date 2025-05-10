@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {href, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import { useAuth } from "../auth/useAuth.js";
 import "../css/Header.css";
 import logo from "../assets/Incidenty-logo.png";
@@ -8,7 +8,7 @@ function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
     const navigate = useNavigate();
 
-    const { isLoggedIn, logout } = useAuth(); // ⬅️ nový způsob
+    const { isLoggedIn, logout, user } = useAuth(); // ⬅️ nový způsob
 
     const toggleMenu = () => {
         // console.log(isLoggedIn);
@@ -40,15 +40,16 @@ function Header() {
                         <li><a href="/report">Nahlásit</a></li>
                         {isLoggedIn ? (
                             <>
+                                {user?.role === "ROLE_ADMIN" && (
+                                    <li><a href="/registrace">Registrace</a></li>
+                                )}
                                 <li><a href="/profile">Profil</a></li>
                                 <li><button onClick={handleLogout} className="logout-btn">Odhlásit se</button></li>
                             </>
                         ) : (
-                            <>
-                                <li><a href="/registrace">Registrace</a></li>
-                                <li><a href="/login">Login</a></li>
-                            </>
+                            <li><a href="/login">Login</a></li>
                         )}
+
                     </ul>
                 )}
             </div>

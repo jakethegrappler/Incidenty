@@ -7,8 +7,29 @@ import "../css/ReportForm.css";
 function ReportForm() {
     const { user } = useAuth();
     const location = useLocation();
-    const now = new Date();
     const selectedType = location.state?.selectedType || "NEZNÁMÝ";
+
+
+
+
+    const formatLocalDatetime = (date) => {
+        const pad = (n) => String(n).padStart(2, "0");
+
+        const year = date.getFullYear();
+        const month = pad(date.getMonth() + 1);
+        const day = pad(date.getDate());
+        const hours = pad(date.getHours());
+        const minutes = pad(date.getMinutes());
+
+        return `${year}-${month}-${day}T${hours}:${minutes}`;
+    };
+
+    const now = new Date();
+
+
+
+
+
 
     const [form, setForm] = useState({
         datetime: "",
@@ -190,7 +211,8 @@ function ReportForm() {
                         name="datetime"
                         value={form.datetime}
                         onChange={handleChange}
-                        max={now}
+                        max={formatLocalDatetime(now)}
+
                         required
                     />
 

@@ -118,3 +118,19 @@
     font-size: 14px;
     color: var(--text-color);
 }
+
+.heatmap-toggle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 16px;
+    color: var(--text-color);
+    font-weight: bold;
+}
+
+.heatmap-toggle input[type="checkbox"] {
+    transform: scale(1.3);
+    margin-right: 10px;
+    cursor: pointer;
+}

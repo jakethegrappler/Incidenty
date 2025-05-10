@@ -16,6 +16,8 @@ function MapPage() {
 
     const navigate = useNavigate();
 
+    const [useHeatmap, setUseHeatmap] = useState(false);
+
 
 
     const incidentTypes = [
@@ -127,13 +129,26 @@ function MapPage() {
                         ))}
                     </div>
                 </div>
+            </div>
 
+            {/* 🌡️ Přepínač heatmapy */}
+            <div className="heatmap-toggle" style={{ marginBottom: "20px" }}>
+                <label>
+                    <input
+                        type="checkbox"
+                        checked={useHeatmap}
+                        onChange={() => setUseHeatmap(prev => !prev)}
+                        style={{ marginRight: "8px" }}
+                    />
+                    Zobrazit jako heatmapu
+                </label>
             </div>
 
             <div className="map-container">
                 <IncidentsMap
                     onSectorClick={handleSectorClick}
                     incidents={filteredIncidents}
+                    useHeatmap={useHeatmap}
                 />
             </div>
 
@@ -162,6 +177,7 @@ function MapPage() {
             )}
         </div>
     );
+
 }
 
 export default MapPage;
