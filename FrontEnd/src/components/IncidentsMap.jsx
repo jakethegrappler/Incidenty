@@ -6,12 +6,13 @@ import HeatOverlay from "./HeatOverlay";
 
 
 const typeColors = {
-    "Krádež": "#e63946",      // červená
-    "Napadení": "#f77f00",    // oranžová
-    "Požár": "#fcbf49",       // zlatá
-    "Úraz": "#00b4d8",        // tyrkysová
-    "Vandalismus": "#5e60ce", // fialová
-    "Havárie": "#6c757d"      // šedá
+    "KRADEZ": "#e63946",      // červená
+    "NAPADENI": "#f77f00",    // oranžová
+    "POZAR": "#fcbf49",       // zlatá
+    "URAZ": "#00b4d8",        // tyrkysová
+    "VANDALISMUS": "#5e60ce", // fialová
+    "HAVARIE": "#000509", // šedá
+    "OSTATNI": "#136235"
 };
 
 
@@ -32,7 +33,7 @@ function getColorForType(type) {
     return typeColors[type] || "#6b7280"; // šedá jako výchozí
 }
 
-function IncidentsMap({ onMapClick, onSectorClick, incidents = [], useHeatmap = false }) {
+function IncidentsMap({ onMapClick, onSectorClick, incidents = [], useHeatmap = false, selectedPoint }) {
     const handleClick = (e) => {
         if (!onMapClick) return;
 
@@ -119,6 +120,18 @@ function IncidentsMap({ onMapClick, onSectorClick, incidents = [], useHeatmap = 
                         opacity="0.9"
                     />
                 ))}
+
+                {selectedPoint && !useHeatmap && (
+                    <circle
+                        cx={selectedPoint.x}
+                        cy={selectedPoint.y}
+                        r="6"
+                        fill="#000"
+                        stroke="#fff"
+                        strokeWidth="2"
+                        opacity="0.9"
+                    />
+                )}
 
             </svg>
         </div>

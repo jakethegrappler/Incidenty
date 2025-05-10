@@ -1,12 +1,14 @@
 package cz.cvut.fel.incidenty.dto;
 
+import cz.cvut.fel.incidenty.model.enums.Type;
+
 import java.time.LocalDateTime;
 
 public record IncidentDto(
         Long id,
         LocalDateTime date,
         LocalDateTime issueDate,
-        String type,
+        Type type,
         String position,
         String reporter,
         String izs,

@@ -1,5 +1,6 @@
 package cz.cvut.fel.incidenty.model;
 
+import cz.cvut.fel.incidenty.model.enums.Type;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,8 +23,9 @@ public class Incident {
     @Column(nullable = false)
     private LocalDateTime date;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String type;
+    private Type type;
 
     @Column(nullable = false)
     private String position;

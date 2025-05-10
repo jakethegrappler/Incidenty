@@ -1,15 +1,14 @@
-import { useEffect, useState } from "react";
-import { useAuth } from "../auth/useAuth";
-import { useLocation } from "react-router-dom";
+import {useEffect, useState} from "react";
+import {useAuth} from "../auth/useAuth";
+import {useLocation} from "react-router-dom";
 import IncidentsMap from "../components/IncidentsMap";
 import "../css/ReportForm.css";
 
 function ReportForm() {
-    const { user } = useAuth();
+    const {user} = useAuth();
     const location = useLocation();
     const selectedType = location.state?.selectedType || "NEZNÁMÝ";
-
-
+    const [incidentTypes, setIncidentTypes] = useState([]);
 
 
     const formatLocalDatetime = (date) => {
@@ -25,10 +24,6 @@ function ReportForm() {
     };
 
     const now = new Date();
-
-
-
-
 
 
     const [form, setForm] = useState({
@@ -54,12 +49,19 @@ function ReportForm() {
                 customPhoneNumber: user.phoneNumber || "",
             }));
         }
+        fetch("http://localhost:8080/incident/incident-types")
+            .then((res) => res.json())
+            .then((data) => {
+                console.log("Načtené typy:", data)
+                setIncidentTypes(data)
+            })
+            .catch((err) => console.error("Nepodařilo se načíst typy incidentů:", err));
     }, [user]);
 
     const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
 
     const handleChange = (e) => {
-        const { name, value, files } = e.target;
+        const {name, value, files} = e.target;
         console.log(now);
 
         if (name === "photo" && files && files[0]) {
@@ -90,7 +92,6 @@ function ReportForm() {
     };
 
 
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!form.location) {
@@ -108,7 +109,7 @@ function ReportForm() {
             return;
 
         }
-        if (form.description == null){
+        if (form.description == null) {
             setFormError("Popište co se stalo.");
             return;
         }
@@ -132,7 +133,7 @@ function ReportForm() {
             y: form.y
         };
 
-        formData.append("incident", new Blob([JSON.stringify(incidentDto)], { type: "application/json" }));
+        formData.append("incident", new Blob([JSON.stringify(incidentDto)], {type: "application/json"}));
         if (form.photo) formData.append("photo", form.photo);
 
         try {
@@ -159,7 +160,7 @@ function ReportForm() {
                 customPhoneNumber: "",
                 description: "",
                 reporter: user?.email || "",
-                type: selectedType,
+                type: "",
                 photo: null,
             });
 
@@ -174,7 +175,7 @@ function ReportForm() {
     return (
         <div className="page-wrapper fade-in">
             <div className="form-container">
-                <h1 className="form-title">Nahlásit: {form.type.toUpperCase()}</h1>
+                {/*<h1 className="form-title">Nahlásit: {form.type.toUpperCase()}</h1>*/}
 
                 <div className="map-container">
                     <IncidentsMap
@@ -185,8 +186,11 @@ function ReportForm() {
                                 x: Math.round(x),
                                 y: Math.round(y)
                             }));
+
                             setFormError("");
                         }}
+                        selectedPoint={form.x && form.y ? { x: form.x, y: form.y } : null}
+
                     />
                     <p className="selected-sector-info">
                         Vybraná lokace: <strong>{form.location || ""}</strong>
@@ -206,6 +210,20 @@ function ReportForm() {
                 )}
 
                 <form onSubmit={handleSubmit} className="report-form">
+
+                    <select
+                        name="type"
+                        value={form.type}
+                        onChange={handleChange}
+                        required>
+                        <option value="">-- vyberte typ incidentu --</option>
+
+                        {incidentTypes.map((t) => (
+                            <option key={t} value={t}>{t}</option>
+                        ))}
+                    </select>
+
+
                     <input
                         type="datetime-local"
                         name="datetime"

@@ -8,12 +8,23 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 function SectorStatsModal({ sector, stats, onClose }) {
     const total = Object.values(stats).reduce((sum, count) => sum + count, 0);
     const typeColors = {
-        "Krádež": "#e63946",
-        "Napadení": "#f77f00",
-        "Požár": "#fcbf49",
-        "Úraz": "#00b4d8",
-        "Vandalismus": "#5e60ce",
-        "Havárie": "#6c757d"
+        "KRADEZ": "#e63946",      // červená
+        "NAPADENI": "#f77f00",    // oranžová
+        "POZAR": "#fcbf49",       // zlatá
+        "URAZ": "#00b4d8",        // tyrkysová
+        "VANDALISMUS": "#5e60ce", // fialová
+        "HAVARIE": "#000509", // šedá
+        "OSTATNI": "#136235"
+    };
+
+    const typeLabels = {
+        "KRADEZ": "Krádež",
+        "NAPADENI": "Napadení",
+        "POZAR": "Požár",
+        "URAZ": "Úraz",
+        "VANDALISMUS": "Vandalismus",
+        "HAVARIE": "Havárie",
+        "OSTATNI": "Ostatní"
     };
 
 
@@ -24,7 +35,7 @@ function SectorStatsModal({ sector, stats, onClose }) {
     const topCount = topTypeEntry[1];
 
     const chartData = {
-        labels: Object.keys(stats),
+        labels: Object.keys(stats).map(type => typeLabels[type] || type),
         datasets: [
             {
                 data: Object.values(stats),
@@ -41,11 +52,11 @@ function SectorStatsModal({ sector, stats, onClose }) {
 
                 <div className="modal-stats-summary">
                     <p><strong>Celkem incidentů:</strong> {total}</p>
-                    <p><strong>Nejčastější typ:</strong> {topType} ({topCount}×)</p>
+                    <p><strong>Nejčastější typ:</strong> {typeLabels[topType] || topType} ({topCount}×)</p>
                 </div>
 
                 <div className="modal-chart">
-                    <Pie data={chartData} />
+                <Pie data={chartData} />
                 </div>
 
                 <button className="modal-close" onClick={onClose}>Zavřít</button>

@@ -32,12 +32,14 @@ export const AuthProvider = ({ children }) => {
             if (response.ok) {
                 const userData = await response.json();
                 setUser(userData);
-                setRole(userData.role); // volitelně
+                setRole(userData.role);
             } else {
+                logout();
                 console.error("Chyba při získání údajů o uživateli");
             }
         } catch (error) {
             console.error("Chyba:", error);
+            logout();
         }
     };
 

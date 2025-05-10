@@ -19,16 +19,29 @@ function MapPage() {
     const [useHeatmap, setUseHeatmap] = useState(false);
 
 
+    const typeColors = {
+        KRADEZ: "#e63946",
+        NAPADENI: "#f77f00",
+        POZAR: "#fcbf49",
+        URAZ: "#00b4d8",
+        VANDALISMUS: "#5e60ce",
+        HAVARIE: "#000509",
+        OSTATNI: "#136235"
+    };
 
-    const incidentTypes = [
-        "Napadení",
-        "Havárie",
-        "Vandalismus",
-        "Krádež",
-        "Požár",
-        "Úraz"
-    ];
 
+
+    const typeLabels = {
+        KRADEZ: "Krádež",
+        NAPADENI: "Napadení",
+        POZAR: "Požár",
+        URAZ: "Úraz",
+        VANDALISMUS: "Vandalismus",
+        HAVARIE: "Havárie",
+        OSTATNI: "Ostatní"
+    };
+
+    const incidentTypes = Object.keys(typeLabels);
 
 
     useEffect(() => {
@@ -40,16 +53,16 @@ function MapPage() {
 
 
 
-    const toggleDropdown = () => {
-        setDropdownOpen(prev => !prev);
-    };
-
-
-
-    const selectIncident = (type) => {
-        setDropdownOpen(false);
-        navigate("/report", { state: { selectedType: type } });
-    };
+    // const toggleDropdown = () => {
+    //     setDropdownOpen(prev => !prev);
+    // };
+    //
+    //
+    //
+    // const selectIncident = (type) => {
+    //     setDropdownOpen(false);
+    //     navigate("/report", { state: { selectedType: type } });
+    // };
 
 
     const handleSectorClick = async (sector) => {
@@ -92,7 +105,13 @@ function MapPage() {
     return (
         <div className="page-wrapper fade-in">
             <h1 className="page-title">Mapa Kampusu FEL</h1>
-
+            <div className="map-container">
+                <IncidentsMap
+                    onSectorClick={handleSectorClick}
+                    incidents={filteredIncidents}
+                    useHeatmap={useHeatmap}
+                />
+            </div>
             {/* 🔍 Filtrační panel */}
             <div className="filter-panel">
                 <label>
@@ -109,7 +128,17 @@ function MapPage() {
                     <p><strong>Typy incidentů:</strong></p>
                     <div className="checkbox-group">
                         {incidentTypes.map((type) => (
-                            <label key={type}>
+                            <label
+                                key={type}
+                                style={{
+                                    backgroundColor: selectedTypes.includes(type)
+                                        ? typeColors[type]
+                                        : "#f0f0f0",
+                                    color: selectedTypes.includes(type) ? "#fff" : "#333",
+                                    border: `1px solid ${typeColors[type]}`,
+                                    transition: "all 0.2s ease-in-out",
+                                }}
+                            >
                                 <input
                                     type="checkbox"
                                     value={type}
@@ -123,49 +152,44 @@ function MapPage() {
                                                 : prev.filter((t) => t !== value)
                                         );
                                     }}
+                                    style={{display: "none"}}
                                 />
-                                {type}
+                                {typeLabels[type] || type}
                             </label>
                         ))}
                     </div>
+
                 </div>
             </div>
 
             {/* 🌡️ Přepínač heatmapy */}
-            <div className="heatmap-toggle" style={{ marginBottom: "20px" }}>
+            <div className="heatmap-toggle" style={{marginBottom: "20px"}}>
                 <label>
                     <input
                         type="checkbox"
                         checked={useHeatmap}
                         onChange={() => setUseHeatmap(prev => !prev)}
-                        style={{ marginRight: "8px" }}
+                        style={{marginRight: "8px"}}
                     />
                     Zobrazit jako heatmapu
                 </label>
             </div>
 
-            <div className="map-container">
-                <IncidentsMap
-                    onSectorClick={handleSectorClick}
-                    incidents={filteredIncidents}
-                    useHeatmap={useHeatmap}
-                />
-            </div>
 
-            <div className="dropdown-container">
-                <button onClick={toggleDropdown} className="dropdown-toggle">
-                    {dropdownOpen ? "▲" : "▼"} Chci nahlásit:
-                </button>
-                {dropdownOpen && (
-                    <ul className="dropdown-menu">
-                        {incidentTypes.map((type, index) => (
-                            <li key={index} onClick={() => selectIncident(type)}>
-                                {type}
-                            </li>
-                        ))}
-                    </ul>
-                )}
-            </div>
+            {/*<div className="dropdown-container">*/}
+            {/*    <button onClick={toggleDropdown} className="dropdown-toggle">*/}
+            {/*        {dropdownOpen ? "▲" : "▼"} Chci nahlásit:*/}
+            {/*    </button>*/}
+            {/*    {dropdownOpen && (*/}
+            {/*        <ul className="dropdown-menu">*/}
+            {/*            {incidentTypes.map((type, index) => (*/}
+            {/*                <li key={index} onClick={() => selectIncident(type)}>*/}
+            {/*                    {type}*/}
+            {/*                </li>*/}
+            {/*            ))}*/}
+            {/*        </ul>*/}
+            {/*    )}*/}
+            {/*</div>*/}
 
             {/* 📊 Modální okno se statistikami */}
             {selectedSector && sectorStats && (

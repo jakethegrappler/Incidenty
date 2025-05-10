@@ -2,6 +2,7 @@ package cz.cvut.fel.incidenty;
 
 import cz.cvut.fel.incidenty.model.Admin;
 import cz.cvut.fel.incidenty.model.Incident;
+import cz.cvut.fel.incidenty.model.enums.Type;
 import cz.cvut.fel.incidenty.repository.IncidentRepository;
 import cz.cvut.fel.incidenty.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
@@ -22,8 +23,15 @@ public class DBInit {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    private final List<String> types = Arrays.asList(
-            "Krádež", "Napadení", "Požár", "Úraz", "Vandalismus", "Havárie"
+
+    private final List<Type> types = List.of(
+            Type.NAPADENI,
+            Type.HAVARIE,
+            Type.URAZ,
+            Type.VANDALISMUS,
+            Type.KRADEZ,
+            Type.POZAR,
+            Type.OSTATNI
     );
 
     private final List<String> izsUnits = Arrays.asList("PČR", "HZS", "ZZSHMP", "Ne");
