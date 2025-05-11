@@ -42,6 +42,7 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                 .requestMatchers("/uploads/**").permitAll() // ⬅️ Tohle dovolí fotky
                                 .requestMatchers("/user/notifications/remove/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_EMPLOYEE")
+                                .requestMatchers("/incident/update/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_EMPLOYEE")
                                 .requestMatchers(HttpMethod.GET, "/incident/incident-types").permitAll()
 
                                 .requestMatchers(SecurityEndpoints.PUBLIC_URLS).permitAll()

@@ -17,11 +17,13 @@ public class SecurityEndpoints {
     public static final String[] ADMIN_URLS = {
             "/admin/**",
             "/incident/**"
+
     };
 
     public static final String[] EMPLOYEE_URLS = {
             "/employee/**",
-            "/incident/**"
+            "/incident/**",
+            "/incident/update"
     };
 
 
