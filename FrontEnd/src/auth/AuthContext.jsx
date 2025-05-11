@@ -18,10 +18,9 @@ export const AuthProvider = ({ children }) => {
             setIsLoggedIn(false);
         }
     }, []);
-
     const fetchUserInfo = async (token) => {
         try {
-            const response = await fetch("http://localhost:8080/user/info", {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/user/info`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

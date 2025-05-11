@@ -15,7 +15,7 @@ const Profile = () => {
         const fetchUserInfo = async () => {
             try {
                 const token = localStorage.getItem("token");
-                const response = await fetch("${import.meta.env.VITE_API_URL}/user/info", {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/user/info`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -46,7 +46,7 @@ const Profile = () => {
         const fetchIncidents = async () => {
             try {
                 const token = localStorage.getItem("token");
-                const response = await fetch("${import.meta.env.VITE_API_URL}/incident/all", {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/incident/all`, {
                     headers: {Authorization: `Bearer ${token}`}
                 });
                 if (response.ok) {

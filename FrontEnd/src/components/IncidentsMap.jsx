@@ -142,7 +142,9 @@ IncidentsMap.propTypes = {
     onMapClick: PropTypes.func,
     onSectorClick: PropTypes.func,
     incidents: PropTypes.array,
-    useHeatmap: PropTypes.bool
+    useHeatmap: PropTypes.bool,
+    // selectedPoint: PropTypes.bool
+
 };
 
 export default IncidentsMap;

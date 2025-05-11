@@ -45,7 +45,7 @@ function MapPage() {
 
 
     useEffect(() => {
-        fetch("${import.meta.env.VITE_API_URL}/incident/all")
+        fetch(`${import.meta.env.VITE_API_URL}/incident/all`)
             .then(res => res.json())
             .then(data => setIncidentPoints(data))
             .catch(err => console.error("Chyba načítání incidentů:", err));
