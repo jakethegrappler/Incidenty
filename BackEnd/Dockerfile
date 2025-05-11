@@ -14,12 +14,17 @@ RUN chmod +x mvnw
 RUN ./mvnw clean package -DskipTests
 
 # Spouštěcí fáze (menší image)
-FROM eclipse-temurin:21-jre
-
+FROM eclipse-temurin:21-jdk AS build
 WORKDIR /app
+COPY . .
 
-# Zkopíruj .jar z předchozí fáze
+RUN chmod +x ./mvnw
+
+# ⚠️ důležité – použij spring-boot:repackage!
+RUN ./mvnw clean package spring-boot:repackage -DskipTests
+
+FROM eclipse-temurin:21-jre
+WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
-
-# Spusť aplikaci
 ENTRYPOINT ["java", "-jar", "app.jar"]
+
