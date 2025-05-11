@@ -7,6 +7,9 @@ WORKDIR /app
 # Zkopíruj celý projekt
 COPY . .
 
+
+RUN chmod +x mvnw
+
 # Buildni aplikaci (bez testů)
 RUN ./mvnw clean package -DskipTests
 
