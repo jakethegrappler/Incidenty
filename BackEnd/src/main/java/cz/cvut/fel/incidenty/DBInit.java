@@ -1,7 +1,9 @@
 package cz.cvut.fel.incidenty;
 
 import cz.cvut.fel.incidenty.model.Admin;
+import cz.cvut.fel.incidenty.model.Employee;
 import cz.cvut.fel.incidenty.model.Incident;
+import cz.cvut.fel.incidenty.model.Student;
 import cz.cvut.fel.incidenty.model.enums.Type;
 import cz.cvut.fel.incidenty.repository.IncidentRepository;
 import cz.cvut.fel.incidenty.repository.UserRepository;
@@ -13,7 +15,7 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static cz.cvut.fel.incidenty.model.enums.Role.ROLE_ADMIN;
+import static cz.cvut.fel.incidenty.model.enums.Role.*;
 
 @Component
 @RequiredArgsConstructor
@@ -88,8 +90,29 @@ public class DBInit {
         admin.setEmail("nedbal.jakub@gmail.com");
         admin.setFirstName("Jakub");
         admin.setLastName("Nedbal");
-
         userRepository.save(admin);
+
+        // Employee
+        Employee employee = new Employee();
+        employee.setUsername("felemployee");
+        employee.setRole(ROLE_EMPLOYEE);
+        employee.setPassword(passwordEncoder.encode("heslo"));
+        employee.setPhoneNumber("777777777");
+        employee.setEmail("employee@cvut.cz");
+        employee.setFirstName("Ema");
+        employee.setLastName("Zaměstnaná");
+        userRepository.save(employee);
+
+        // Student
+        Student student = new Student();
+        student.setUsername("felstudent");
+        student.setRole(ROLE_STUDENT);
+        student.setPassword(passwordEncoder.encode("heslo"));
+        student.setPhoneNumber("888888888");
+        student.setEmail("student@cvut.cz");
+        student.setFirstName("Stanislav");
+        student.setLastName("Studentík");
+        userRepository.save(student);
     }
 
     private <T> T getRandom(List<T> list) {
