@@ -1,8 +1,9 @@
 import { useState } from "react";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import { useAuth } from "../auth/useAuth.js";
 import "../css/Header.css";
 import logo from "../assets/Incidenty-logo.png";
+import login from "../pages/Login.jsx";
 
 function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -38,6 +39,7 @@ function Header() {
                     <ul className="dropdown-nav">
                         <li><a href="/home">Hlavní stránka</a></li>
                         <li><a href="/report">Nahlásit</a></li>
+
                         {isLoggedIn ? (
                             <>
                                 {user?.role === "ROLE_ADMIN" && (
@@ -47,7 +49,8 @@ function Header() {
                                 <li><button onClick={handleLogout} className="logout-btn">Odhlásit se</button></li>
                             </>
                         ) : (
-                            <li><a href="/login">Login</a></li>
+                            <Link to={login}>Login</Link>
+                            // <li><a href="/login">Login</a></li>
                         )}
 
                     </ul>
