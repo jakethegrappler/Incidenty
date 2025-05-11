@@ -236,7 +236,7 @@ const IncidentsPage = () => {
                             <td>
                                 {incident.photoPath ? (
                                     <a
-                                        href={`http://localhost:8080/${incident.photoPath}`}
+                                        href={`${import.meta.env.VITE_API_URL}/${incident.photoPath}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         title="Zobrazit fotku"
