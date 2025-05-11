@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import IncidentsMap from "../components/IncidentsMap";
 import SectorStatsModal from "../components/SectorStatsModal";
 import "../css/Home.css";
 
 function MapPage() {
-    const [dropdownOpen, setDropdownOpen] = useState(false);
+    // const [dropdownOpen, setDropdownOpen] = useState(false);
     const [selectedSector, setSelectedSector] = useState(null);
     const [sectorStats, setSectorStats] = useState(null);
     const [incidentPoints, setIncidentPoints] = useState([]);
@@ -14,7 +14,7 @@ function MapPage() {
 
     const [selectedTypes, setSelectedTypes] = useState([]);
 
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     const [useHeatmap, setUseHeatmap] = useState(false);
 
@@ -45,7 +45,7 @@ function MapPage() {
 
 
     useEffect(() => {
-        fetch("http://localhost:8080/incident/all")
+        fetch("${import.meta.env.VITE_API_URL}/incident/all")
             .then(res => res.json())
             .then(data => setIncidentPoints(data))
             .catch(err => console.error("Chyba načítání incidentů:", err));
@@ -67,7 +67,7 @@ function MapPage() {
 
     const handleSectorClick = async (sector) => {
         try {
-            const response = await fetch(`http://localhost:8080/incident/stats/${sector}`);
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/incident/stats/${sector}`);
             if (!response.ok) throw new Error("Chyba při načítání statistik.");
             const data = await response.json();
             setSelectedSector(sector);

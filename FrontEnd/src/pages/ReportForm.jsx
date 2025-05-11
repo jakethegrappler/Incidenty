@@ -49,7 +49,7 @@ function ReportForm() {
                 customPhoneNumber: user.phoneNumber || "",
             }));
         }
-        fetch("http://localhost:8080/incident/incident-types")
+        fetch("${import.meta.env.VITE_API_URL}/incident/incident-types")
             .then((res) => res.json())
             .then((data) => {
                 console.log("Načtené typy:", data)
@@ -143,7 +143,7 @@ function ReportForm() {
                 headers["Authorization"] = `Bearer ${token}`;
             }
 
-            const response = await fetch("http://localhost:8080/incident/create", {
+            const response = await fetch("${import.meta.env.VITE_API_URL}/incident/create", {
                 method: "POST",
                 body: formData,
                 headers: headers,

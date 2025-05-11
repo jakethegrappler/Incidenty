@@ -33,7 +33,7 @@ const IncidentsPage = () => {
     const fetchIncidents = async () => {
         try {
             const token = localStorage.getItem("token");
-            const response = await fetch("http://localhost:8080/incident/all", {
+            const response = await fetch("${import.meta.env.VITE_API_URL}/incident/all", {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
@@ -79,7 +79,7 @@ const IncidentsPage = () => {
     const handleSave = async () => {
         try {
             const token = localStorage.getItem("token");
-            const response = await fetch(`http://localhost:8080/incident/update/${editingIncident.id}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/incident/update/${editingIncident.id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

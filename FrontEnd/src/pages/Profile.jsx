@@ -15,7 +15,7 @@ const Profile = () => {
         const fetchUserInfo = async () => {
             try {
                 const token = localStorage.getItem("token");
-                const response = await fetch("http://localhost:8080/user/info", {
+                const response = await fetch("${import.meta.env.VITE_API_URL}/user/info", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -46,7 +46,7 @@ const Profile = () => {
         const fetchIncidents = async () => {
             try {
                 const token = localStorage.getItem("token");
-                const response = await fetch("http://localhost:8080/incident/all", {
+                const response = await fetch("${import.meta.env.VITE_API_URL}/incident/all", {
                     headers: {Authorization: `Bearer ${token}`}
                 });
                 if (response.ok) {
@@ -76,7 +76,7 @@ const Profile = () => {
     const handleDismissNotification = async (incidentId) => {
         try {
             const token = localStorage.getItem("token");
-            const response = await fetch(`http://localhost:8080/user/notifications/remove/${incidentId}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/user/notifications/remove/${incidentId}`, {
                 method: "PUT",
                 headers: {
                     Authorization: `Bearer ${token}`

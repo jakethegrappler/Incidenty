@@ -3,7 +3,7 @@ import {Link, useNavigate} from "react-router-dom";
 import { useAuth } from "../auth/useAuth.js";
 import "../css/Header.css";
 import logo from "../assets/Incidenty-logo.png";
-import login from "../pages/Login.jsx";
+// import login from "../pages/Login.jsx";
 
 function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
