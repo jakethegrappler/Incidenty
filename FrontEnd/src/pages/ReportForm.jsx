@@ -195,6 +195,7 @@ function ReportForm() {
                     <input
                         type="file"
                         name="photo"
+                        className="upload-button"
                         accept="image/*"
                         onChange={handleChange}
                     />
