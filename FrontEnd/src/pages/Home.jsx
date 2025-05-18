@@ -10,7 +10,7 @@ function MapPage() {
     const [sectorStats, setSectorStats] = useState(null);
     const [incidentPoints, setIncidentPoints] = useState([]);
 
-    const [selectedDays, setSelectedDays] = useState(0); // 0 = bez omezení
+    const [selectedDays, setSelectedDays] = useState(7); // posledni tyden
 
     const [selectedTypes, setSelectedTypes] = useState([]);
 
@@ -104,7 +104,7 @@ function MapPage() {
 
     return (
         <div className="page-wrapper fade-in">
-            <h1 className="page-title">Mapa Kampusu FEL</h1>
+            {/*<h1 className="page-title">Mapa Kampusu FEL</h1>*/}
             <div className="map-container">
                 <IncidentsMap
                     onSectorClick={handleSectorClick}
