@@ -16,9 +16,9 @@
 .logo {
     position: relative;
     left: 10px;
-    width: 55px;
-    height: 55px;
-    border-radius: 25%;
+    width: 70px;
+    height: 70px;
+    border-radius: 5%;
     cursor: pointer;
 }
 
