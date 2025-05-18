@@ -109,7 +109,8 @@
 			<artifactId>jackson-core</artifactId>
 			<version>2.18.2</version>
 		</dependency>
-		<!-- JPA dependencies -->
+
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
