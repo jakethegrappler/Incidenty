@@ -27,6 +27,28 @@
     position: relative;
 }
 
+.center-button-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.reportB {
+    background-color: #2563eb;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.reportB:hover {
+    background-color: #1e40af;
+}
+
+
 .menu-toggle {
     background-color: #2d3748;
     color: white;

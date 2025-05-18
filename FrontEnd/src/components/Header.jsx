@@ -30,6 +30,9 @@ function Header() {
             <div className="logo-container">
                 <img src={logo} alt="logo picture" className="logo" onClick={navigateHome} />
             </div>
+            <div className="center-button-wrapper">
+                <a href="/report" className="reportB">📢 NAHLÁSIT INCIDENT</a>
+            </div>
             <div className="menu-wrapper">
                 <button className="menu-toggle" onClick={toggleMenu}>
                     ☰

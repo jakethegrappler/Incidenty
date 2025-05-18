@@ -96,10 +96,10 @@ function MapPage() {
                 <label>
                     Časové období:&nbsp;
                     <select value={selectedDays} onChange={(e) => setSelectedDays(Number(e.target.value))}>
-                        <option value={0}>Vše</option>
                         <option value={7}>Posledních 7 dní</option>
                         <option value={14}>Posledních 14 dní</option>
                         <option value={31}>Posledních 31 dní</option>
+                        <option value={0}>Vše</option>
                     </select>
                 </label>
 
