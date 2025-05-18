@@ -2,6 +2,7 @@ package cz.cvut.fel.incidenty.rest.controller;
 
 import cz.cvut.fel.incidenty.dto.IncidentDto;
 import cz.cvut.fel.incidenty.model.Incident;
+import cz.cvut.fel.incidenty.model.enums.Type;
 import cz.cvut.fel.incidenty.repository.IncidentRepository;
 import cz.cvut.fel.incidenty.service.IncidentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,12 +50,16 @@ public class IncidentController {
         List<Incident> incidents = incidentRepository.findByPositionIgnoreCase(sector);
 
         Map<String, Long> stats = incidents.stream()
-                .collect(Collectors.groupingBy(Incident::getType, Collectors.counting()));
+                .collect(Collectors.groupingBy(i -> i.getType().name(), Collectors.counting()));
+
 
         return ResponseEntity.ok(stats);
     }
 
-
+    @GetMapping("/incident-types")
+    public ResponseEntity<Type[]> getIncidentTypes() {
+        return ResponseEntity.ok(Type.values());
+    }
 
 
 }

@@ -18,10 +18,9 @@ export const AuthProvider = ({ children }) => {
             setIsLoggedIn(false);
         }
     }, []);
-
     const fetchUserInfo = async (token) => {
         try {
-            const response = await fetch("http://localhost:8080/user/info", {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/user/info`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -32,12 +31,14 @@ export const AuthProvider = ({ children }) => {
             if (response.ok) {
                 const userData = await response.json();
                 setUser(userData);
-                setRole(userData.role); // volitelně
+                setRole(userData.role);
             } else {
+                logout();
                 console.error("Chyba při získání údajů o uživateli");
             }
         } catch (error) {
             console.error("Chyba:", error);
+            logout();
         }
     };
 

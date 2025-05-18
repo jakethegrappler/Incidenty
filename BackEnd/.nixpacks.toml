@@ -1,0 +1,11 @@
+[phases.setup]
+nixpkgsArchive = "a5c4fdb25ddf3df49b5a73d2a76b16d7ecfa3c7d" # obsahuje Java 21
+
+[phases.install]
+cmds = ["./mvnw install -DskipTests"]
+
+[phases.build]
+cmds = ["./mvnw package -DskipTests"]
+
+[phases.start]
+cmd = "java -jar target/*.jar"

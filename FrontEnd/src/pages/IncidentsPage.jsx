@@ -33,7 +33,7 @@ const IncidentsPage = () => {
     const fetchIncidents = async () => {
         try {
             const token = localStorage.getItem("token");
-            const response = await fetch("http://localhost:8080/incident/all", {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/incident/all`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
@@ -79,7 +79,7 @@ const IncidentsPage = () => {
     const handleSave = async () => {
         try {
             const token = localStorage.getItem("token");
-            const response = await fetch(`http://localhost:8080/incident/update/${editingIncident.id}`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/incident/update/${editingIncident.id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -108,8 +108,8 @@ const IncidentsPage = () => {
         return (
             incident.type?.toLowerCase().includes(query) ||
             incident.position?.toLowerCase().includes(query) ||
-            incident.reporter?.toLowerCase().includes(query) //||
-            // incident.detail?.toLowerCase().includes(query)
+            incident.reporter?.toLowerCase().includes(query) ||
+            incident.detail?.toLowerCase().includes(query)
         );
     });
 
@@ -236,7 +236,7 @@ const IncidentsPage = () => {
                             <td>
                                 {incident.photoPath ? (
                                     <a
-                                        href={`http://localhost:8080/${incident.photoPath}`}
+                                        href={`${import.meta.env.VITE_API_URL}/${incident.photoPath}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         title="Zobrazit fotku"

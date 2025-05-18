@@ -1,23 +1,21 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../auth/useAuth";
+import {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
+import {useAuth} from "../auth/useAuth";
 import "../css/Profile.css";
 
 const Profile = () => {
-    const { user } = useAuth();
+    const {user} = useAuth();
     const navigate = useNavigate();
     const [localUser, setLocalUser] = useState(null);
-    const [incidents, setIncidents] = useState([]);
-    const [readIds, setReadIds] = useState(() => {
-        const stored = localStorage.getItem("readIncidentIds");
-        return stored ? JSON.parse(stored) : [];
-    });
+    const [allIncidents, setAllIncidents] = useState([]);
+    const [notifications, setNotifications] = useState([]);
 
+    // 🧠 Načti user info
     useEffect(() => {
         const fetchUserInfo = async () => {
             try {
                 const token = localStorage.getItem("token");
-                const response = await fetch("http://localhost:8080/user/info", {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/user/info`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -43,18 +41,17 @@ const Profile = () => {
         }
     }, [user]);
 
-
-
+    // 📥 Načti všechna data incidentů (jen jednou)
     useEffect(() => {
         const fetchIncidents = async () => {
             try {
                 const token = localStorage.getItem("token");
-                const response = await fetch("http://localhost:8080/incident/all", {
-                    headers: { Authorization: `Bearer ${token}` }
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/incident/all`, {
+                    headers: {Authorization: `Bearer ${token}`}
                 });
                 if (response.ok) {
                     const data = await response.json();
-                    setIncidents(data);
+                    setAllIncidents(data);
                 } else {
                     console.error("Chyba při načítání incidentů:", await response.text());
                 }
@@ -63,19 +60,39 @@ const Profile = () => {
             }
         };
 
-        if (localUser?.role === "ROLE_ADMIN" || localUser?.role === "ROLE_EMPLOYEE") {
-            fetchIncidents();
+        fetchIncidents();
+    }, []);
+
+    // 🔍 Získání notifikací podle localUser.notifications
+    useEffect(() => {
+        if (localUser && localUser.notifications?.length > 0) {
+            const relevant = allIncidents.filter(i => localUser.notifications.includes(i.id));
+            setNotifications(relevant);
+        } else {
+            setNotifications([]);
         }
-    }, [localUser]);
+    }, [localUser, allIncidents]);
 
-    const unread = incidents.filter(i => !readIds.includes(i.id));
+    const handleDismissNotification = async (incidentId) => {
+        try {
+            const token = localStorage.getItem("token");
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/user/notifications/remove/${incidentId}`, {
+                method: "PUT",
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
 
-    const markAsRead = (id) => {
-        const updated = [...readIds, id];
-        setReadIds(updated);
-        localStorage.setItem("readIncidentIds", JSON.stringify(updated));
+            if (response.ok) {
+                // aktualizuj frontend
+                setNotifications(prev => prev.filter(i => i.id !== incidentId));
+            } else {
+                console.error("Nepodařilo se odstranit notifikaci");
+            }
+        } catch (err) {
+            console.error("Chyba při mazání notifikace:", err);
+        }
     };
-
 
     const handleDatabaseClick = () => {
         navigate("/incidents");
@@ -95,15 +112,18 @@ const Profile = () => {
                 <h2 className="profile-title">Profil uživatele</h2>
 
                 <div className="profile-section">
-                    <div className="profile-item"><span className="profile-label">👤 Jméno:</span>{localUser.firstName}</div>
-                    <div className="profile-item"><span className="profile-label">👥 Příjmení:</span>{localUser.lastName}</div>
-                    <div className="profile-item"><span className="profile-label">📛 Uživatelské jméno:</span>{localUser.username}</div>
+                    <div className="profile-item"><span className="profile-label">👤 Jméno:</span>{localUser.firstName}
+                    </div>
+                    <div className="profile-item"><span className="profile-label">👥 Příjmení:</span>{localUser.lastName}
+                    </div>
+                    <div className="profile-item"><span
+                        className="profile-label">📛 Uživatelské jméno:</span>{localUser.username}</div>
                     <div className="profile-item"><span className="profile-label">📧 Email:</span>{localUser.email}</div>
-                    <div className="profile-item"><span className="profile-label">📞 Telefon:</span>{localUser.phoneNumber}</div>
+                    <div className="profile-item"><span
+                        className="profile-label">📞 Telefon:</span>{localUser.phoneNumber}</div>
                     <div className="profile-item"><span className="profile-label">🛡️ Role:</span>{localUser.role}</div>
                 </div>
 
-                {/* 📚 Správa incidentů */}
                 {(localUser.role === "ROLE_ADMIN" || localUser.role === "ROLE_EMPLOYEE") && (
                     <>
                         <div className="database-button-container">
@@ -112,15 +132,21 @@ const Profile = () => {
                             </button>
                         </div>
 
-                        {/* 🔔 Notifikace */}
-                        {unread.length > 0 && (
+                        {notifications.length > 0 && (
                             <div className="notifications-box">
-                                <h3>🆕 Nové incidenty ({unread.length})</h3>
+                                <h3>🆕 Nové incidenty ({notifications.length})</h3>
                                 <ul>
-                                    {unread.map((incident) => (
+                                    {notifications.map((incident) => (
                                         <li key={incident.id}>
-                                            <strong>{incident.type}</strong> v {incident.position} ({incident.date?.substring(0, 10)})
-                                            <button onClick={() => markAsRead(incident.id)}>✖</button>
+                                            <strong>{incident.type}</strong> v {incident.position} ({incident.date ? new Date(incident.date).toLocaleString("cs-CZ", {
+                                            day: "numeric",
+                                            month: "numeric",
+                                            year: "numeric",
+                                            hour: "2-digit",
+                                            minute: "2-digit"
+                                        }) : "-"}
+                                            )
+                                            <button onClick={() => handleDismissNotification(incident.id)}>✖</button>
                                         </li>
                                     ))}
                                 </ul>

@@ -22,7 +22,8 @@
     box-shadow: var(--box-shadow);
     padding: 20px;
     animation: fadeIn 1.2s ease-in;
-
+    display: flex;
+    justify-content: center;
     width: 100%;
     /*display: flex;*/
     /*justify-content: center;*/
@@ -313,5 +314,9 @@
 
     .search-bar input {
         font-size: 16px;
+    }
+    .table-wrapper {
+        justify-content: flex-start; /* ← na mobilu zarovnat doleva */
+        padding: 10px;
     }
 }

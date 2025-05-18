@@ -1,14 +1,30 @@
-import { useEffect, useState } from "react";
-import { useAuth } from "../auth/useAuth";
-import { useLocation } from "react-router-dom";
+import {useEffect, useState} from "react";
+import {useAuth} from "../auth/useAuth";
+import {useLocation} from "react-router-dom";
 import IncidentsMap from "../components/IncidentsMap";
 import "../css/ReportForm.css";
 
 function ReportForm() {
-    const { user } = useAuth();
+    const {user} = useAuth();
     const location = useLocation();
-
     const selectedType = location.state?.selectedType || "NEZNÁMÝ";
+    const [incidentTypes, setIncidentTypes] = useState([]);
+
+
+    const formatLocalDatetime = (date) => {
+        const pad = (n) => String(n).padStart(2, "0");
+
+        const year = date.getFullYear();
+        const month = pad(date.getMonth() + 1);
+        const day = pad(date.getDate());
+        const hours = pad(date.getHours());
+        const minutes = pad(date.getMinutes());
+
+        return `${year}-${month}-${day}T${hours}:${minutes}`;
+    };
+
+    const now = new Date();
+
 
     const [form, setForm] = useState({
         datetime: "",
@@ -26,6 +42,8 @@ function ReportForm() {
     const [formError, setFormError] = useState("");
 
     useEffect(() => {
+        console.log("VITE_API_URL:", import.meta.env.VITE_API_URL);
+
         if (user) {
             setForm((prev) => ({
                 ...prev,
@@ -33,12 +51,20 @@ function ReportForm() {
                 customPhoneNumber: user.phoneNumber || "",
             }));
         }
+        fetch(`${import.meta.env.VITE_API_URL}/incident/incident-types`)
+            .then((res) => res.json())
+            .then((data) => {
+                console.log("Načtené typy:", data)
+                setIncidentTypes(data)
+            })
+            .catch((err) => console.error("Nepodařilo se načíst typy incidentů:", err));
     }, [user]);
 
     const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
 
     const handleChange = (e) => {
-        const { name, value, files } = e.target;
+        const {name, value, files} = e.target;
+        console.log(now);
 
         if (name === "photo" && files && files[0]) {
             const file = files[0];
@@ -48,16 +74,28 @@ function ReportForm() {
             }
         }
 
+        let newValue = value;
+
+        if (name === "customPhoneNumber") {
+            // 🔢 Odstranění všech nečíselných znaků
+            const digits = value.replace(/\D/g, "").slice(0, 9);
+
+            // 💄 Formátování do trojic (777 123 456)
+            const part1 = digits.slice(0, 3);
+            const part2 = digits.slice(3, 6);
+            const part3 = digits.slice(6, 9);
+            newValue = [part1, part2, part3].filter(Boolean).join("-");
+        }
+
         setForm((prev) => ({
             ...prev,
-            [name]: files ? files[0] : value,
+            [name]: files ? files[0] : newValue,
         }));
     };
 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         if (!form.location) {
             setFormError("Musíte vybrat lokaci na mapě.");
             return;
@@ -66,6 +104,18 @@ function ReportForm() {
             setFormError("Fotka přesahuje povolenou velikost.");
             return;
         }
+
+
+        if (form.datetime > now) {
+            setFormError("Datum incidentu nemůže být v budoucnosti.");
+            return;
+
+        }
+        if (form.description == null) {
+            setFormError("Popište co se stalo.");
+            return;
+        }
+        const cleanedPhone = form.customPhoneNumber.replace(/\D/g, "");
 
         setFormError("");
 
@@ -80,12 +130,12 @@ function ReportForm() {
             solution: null,
             note: null,
             issueDate: null,
-            customPhoneNumber: user?.phoneNumber || form.customPhoneNumber,
+            customPhoneNumber: user?.phoneNumber || cleanedPhone,
             x: form.x,
             y: form.y
         };
 
-        formData.append("incident", new Blob([JSON.stringify(incidentDto)], { type: "application/json" }));
+        formData.append("incident", new Blob([JSON.stringify(incidentDto)], {type: "application/json"}));
         if (form.photo) formData.append("photo", form.photo);
 
         try {
@@ -95,7 +145,7 @@ function ReportForm() {
                 headers["Authorization"] = `Bearer ${token}`;
             }
 
-            const response = await fetch("http://localhost:8080/incident/create", {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/incident/create`, {
                 method: "POST",
                 body: formData,
                 headers: headers,
@@ -112,7 +162,7 @@ function ReportForm() {
                 customPhoneNumber: "",
                 description: "",
                 reporter: user?.email || "",
-                type: selectedType,
+                type: "",
                 photo: null,
             });
 
@@ -127,7 +177,7 @@ function ReportForm() {
     return (
         <div className="page-wrapper fade-in">
             <div className="form-container">
-                <h1 className="form-title">Nahlásit: {form.type.toUpperCase()}</h1>
+                {/*<h1 className="form-title">Nahlásit: {form.type.toUpperCase()}</h1>*/}
 
                 <div className="map-container">
                     <IncidentsMap
@@ -138,8 +188,11 @@ function ReportForm() {
                                 x: Math.round(x),
                                 y: Math.round(y)
                             }));
+
                             setFormError("");
                         }}
+                        selectedPoint={form.x && form.y ? { x: form.x, y: form.y } : null}
+
                     />
                     <p className="selected-sector-info">
                         Vybraná lokace: <strong>{form.location || ""}</strong>
@@ -159,11 +212,27 @@ function ReportForm() {
                 )}
 
                 <form onSubmit={handleSubmit} className="report-form">
+
+                    <select
+                        name="type"
+                        value={form.type}
+                        onChange={handleChange}
+                        required>
+                        <option value="">-- vyberte typ incidentu --</option>
+
+                        {incidentTypes.map((t) => (
+                            <option key={t} value={t}>{t}</option>
+                        ))}
+                    </select>
+
+
                     <input
                         type="datetime-local"
                         name="datetime"
                         value={form.datetime}
                         onChange={handleChange}
+                        max={formatLocalDatetime(now)}
+
                         required
                     />
 
@@ -180,7 +249,7 @@ function ReportForm() {
                         name="customPhoneNumber"
                         value={form.customPhoneNumber}
                         onChange={handleChange}
-                        placeholder="Telefonní číslo"
+                        placeholder="Telefonní číslo(XXX-YYY-ZZZ)"
                         required
                     />
 
