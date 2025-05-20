@@ -4,7 +4,8 @@
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     max-width: 500px;
-    margin: 3rem auto;
+    /*margin: 3rem;*/
+    margin-top: 100px;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
