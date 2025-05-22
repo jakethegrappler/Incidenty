@@ -38,7 +38,7 @@ public class IncidentService {
         incident.setDetail(updatedIncidentDto.detail());
         incident.setSolution(updatedIncidentDto.solution());
         incident.setNote(updatedIncidentDto.note());
-        incident.setIssueDate(LocalDateTime.now());
+        incident.setIssueDate(updatedIncidentDto.issueDate());
         incident.setIzs(updatedIncidentDto.izs());
         incident.setVerified(updatedIncidentDto.verified());
 
