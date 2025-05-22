@@ -285,6 +285,7 @@
 /* SEARCHBAR */
 .search-bar {
     padding-top: 3rem;
+    margin-top: 25px;
     margin-bottom: 16px;
     display: flex;
     justify-content: center;
