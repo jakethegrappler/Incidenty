@@ -112,7 +112,7 @@ function MapPage() {
                     useHeatmap={useHeatmap}
                 />
             </div>
-            {/* 🔍 Filtrační panel */}
+            {/* filtrz */}
             <div className="filter-panel">
                 <label>
                     Časové období:&nbsp;
@@ -162,7 +162,6 @@ function MapPage() {
                 </div>
             </div>
 
-            {/* 🌡️ Přepínač heatmapy */}
             <div className="heatmap-toggle" style={{marginBottom: "20px"}}>
                 <label>
                     <input
@@ -191,7 +190,6 @@ function MapPage() {
             {/*    )}*/}
             {/*</div>*/}
 
-            {/* 📊 Modální okno se statistikami */}
             {selectedSector && sectorStats && (
                 <SectorStatsModal
                     sector={selectedSector}

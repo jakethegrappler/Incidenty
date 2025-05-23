@@ -67,7 +67,7 @@ function IncidentsMap({ onMapClick, onSectorClick, incidents = [], useHeatmap = 
                 xmlns="http://www.w3.org/2000/svg"
                 onClick={handleClick}
             >
-                {/* 🖼️ Podkladová mapa */}
+                {/* Podkladová mapa */}
                 <image
                     href="/FEL-Dejvice_2.png"
                     x="0"
@@ -76,7 +76,7 @@ function IncidentsMap({ onMapClick, onSectorClick, incidents = [], useHeatmap = 
                     height="700"
                 />
 
-                {/* 🔵 Polygony sektorů */}
+
                 <path d="M 417 339 L 417 375 L 477 375 L 477 339 Z" data-sector="A3" className="sector"
                       onClick={() => onSectorClick?.("A3")}/>
                 <path d="M 417 463 L 417 499 L 477 499 L 477 463 Z" data-sector="A4" className="sector"
@@ -108,7 +108,7 @@ function IncidentsMap({ onMapClick, onSectorClick, incidents = [], useHeatmap = 
                 <path d="M 893 344 L 802 435 L 845 482 L 937 389 Z" data-sector="B3A" className="sector"
                       onClick={() => onSectorClick?.("B3A")}/>
 
-                {/* 🔴 Incident tečky */}
+                {/* tečky */}
                 {!useHeatmap && incidents.map((incident, i) => (
                     <circle
                         key={i}

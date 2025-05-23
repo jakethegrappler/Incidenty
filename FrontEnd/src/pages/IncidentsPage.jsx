@@ -285,7 +285,7 @@ const IncidentsPage = () => {
                 </CSVLink>
             </div>
 
-            {/* POPUP pro úpravu */}
+            {/* edit POPUP */}
             {editingIncident && (
                 <div className="popup-backdrop">
                     <div className="popup-content">
@@ -364,7 +364,7 @@ const IncidentsPage = () => {
             )}
 
 
-            {/* Toast zprávy */}
+
             {showToast && <div className="toast-success">✅ Úprava incidentu byla úspěšná!</div>}
             {errorMessage && <div className="toast-error">{errorMessage}</div>}
         </div>

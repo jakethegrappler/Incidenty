@@ -41,7 +41,7 @@ const Profile = () => {
         }
     }, [user]);
 
-    // 📥 Načti všechna data incidentů (jen jednou)
+
     useEffect(() => {
         const fetchIncidents = async () => {
             try {
@@ -63,7 +63,7 @@ const Profile = () => {
         fetchIncidents();
     }, []);
 
-    // 🔍 Získání notifikací podle localUser.notifications
+
     useEffect(() => {
         if (localUser && localUser.notifications?.length > 0) {
             const relevant = allIncidents.filter(i => localUser.notifications.includes(i.id));

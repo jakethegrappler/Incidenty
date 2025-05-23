@@ -20,8 +20,6 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/incidents" element={<IncidentsPage />} />
-
-                {/* Zde můžeš přidat další routy */}
             </Routes>
             <Footer />
             </>
